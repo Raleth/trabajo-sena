@@ -1,0 +1,3 @@
+1. dejar el nucleo funcional de whisper.cpp ()
+2. agregarle interfaz grafica al programa ()
+3. crear la capacidad de descargar modelos de internet()
