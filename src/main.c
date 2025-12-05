@@ -49,13 +49,30 @@ int main(void)
                                                .sizing = {
                                                    .width = CLAY_SIZING_GROW(),
                                                    .height = CLAY_SIZING_GROW()},
-                                               .padding = {20, 20,20,20}}})
+                                               .padding = {20, 20, 20, 20},
+                                                .childGap = 20 }})
         {
-            CLAY(CLAY_ID("Barra_de_menu"), {.backgroundColor = {90, 90, 90, 255},
-                                            .cornerRadius = 8,
-                                            .layout = {.sizing = {
-                                                           .width = CLAY_SIZING_PERCENT(0.1),
-                                                           .height = CLAY_SIZING_PERCENT(1)}}})
+            CLAY(CLAY_ID("Barra_de_menu"), {
+                                               .backgroundColor = {90, 90, 90, 255},
+                                               .cornerRadius = 8,
+                                               .layout = {.sizing = {
+                                                              .width = CLAY_SIZING_PERCENT(0.1),
+                                                              .height = CLAY_SIZING_PERCENT(1)},
+                                                          .padding = {20, 20, 20, 20},
+                                                        },
+                                           })
+            {
+            }
+
+            CLAY(CLAY_ID("area de trabajo"), {
+                                                 .backgroundColor = {90, 90, 90, 255},
+                                                 .cornerRadius = 8,
+                                                 .layout = {.sizing = {
+                                                                .width = CLAY_SIZING_GROW(),
+                                                                .height = CLAY_SIZING_GROW(),
+                                                            },
+                                                            .padding = {20, 20, 20, 20}}
+                                             })
             {
             }
         }
@@ -67,6 +84,6 @@ int main(void)
         Clay_Raylib_Render(renderCommands, NULL);
         EndDrawing();
     }
-    return 0;
     free(claymemory.memory);
+    return 0;
 }
