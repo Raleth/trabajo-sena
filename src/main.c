@@ -27,7 +27,7 @@ int main(void)
     // usamos esta estructura para manejar cuanta memoria usara clay y donde la movera
 
     Clay_Initialize(claymemory, (Clay_Dimensions){.width = altura, .height = ancho},
-                    (Clay_ErrorHandler){HandleClayErrors});
+                    (Clay_ErrorHandler){HandleClayErrors, .userData = NULL});
 
     // inicializamos clay con estos 3 parametros:
     // claymemory: la memoria que va a usar clay
@@ -48,13 +48,14 @@ int main(void)
                                                .layoutDirection = CLAY_LEFT_TO_RIGHT,
                                                .sizing = {
                                                    .width = CLAY_SIZING_GROW(),
-                                                   .height = CLAY_SIZING_GROW()}}})
+                                                   .height = CLAY_SIZING_GROW()},
+                                               .padding = {20, 20,20,20}}})
         {
             CLAY(CLAY_ID("Barra_de_menu"), {.backgroundColor = {90, 90, 90, 255},
+                                            .cornerRadius = 8,
                                             .layout = {.sizing = {
-                                                .width = CLAY_SIZING_FIXED(60),
-                                                .height = CLAY_SIZING_GROW()}}
-                                                          })
+                                                           .width = CLAY_SIZING_PERCENT(0.1),
+                                                           .height = CLAY_SIZING_PERCENT(1)}}})
             {
             }
         }
