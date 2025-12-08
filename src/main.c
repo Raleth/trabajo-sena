@@ -12,6 +12,8 @@ void HandleClayErrors(Clay_ErrorData errorData)
     printf("%s", errorData.errorText.chars);
 }
 
+const int FONT_ID_BODY_16 = 0;
+
 int main(void)
 {
 
@@ -33,8 +35,18 @@ int main(void)
     // claymemory: la memoria que va a usar clay
     // clay_dimensions: las dimensiones iniciales del layout -- en este caso de las mimas dimensiones de la ventana
     // Clay_ErrorHandler: para reportar errores
-
     // ahora crearemos el ciclo de renderizado
+
+    const Clay_Color colorfondo = {43, 41, 51, 255};
+
+    const Clay_Color colorobjeto = {90, 90, 90, 255};
+
+    Font fonts[1];
+    fonts[FONT_ID_BODY_16] = LoadFontEx("fuente/LEMONMILK-Regular.otf", 48, 0, 400);
+    SetTextureFilter(fonts[FONT_ID_BODY_16].texture, TEXTURE_FILTER_BILINEAR);
+    Clay_SetMeasureTextFunction(Raylib_MeasureText, fonts);
+
+    
 
     while (!WindowShouldClose())
     { // aqui estan el inicio y final del ciclo de renderizado de CLAY
@@ -43,37 +55,72 @@ int main(void)
 
         Clay_BeginLayout();
 
-        CLAY(CLAY_ID("Contenedor_total"), {.backgroundColor = {43, 41, 51, 255},
+        CLAY(CLAY_ID("Contenedor_total"), {.backgroundColor = colorfondo,
                                            .layout = {
                                                .layoutDirection = CLAY_LEFT_TO_RIGHT,
                                                .sizing = {
                                                    .width = CLAY_SIZING_GROW(),
                                                    .height = CLAY_SIZING_GROW()},
                                                .padding = {20, 20, 20, 20},
-                                                .childGap = 20 }})
+                                               .childGap = 20}})
         {
             CLAY(CLAY_ID("Barra_de_menu"), {
-                                               .backgroundColor = {90, 90, 90, 255},
+                                               .backgroundColor = colorobjeto,
                                                .cornerRadius = 8,
-                                               .layout = {.sizing = {
-                                                              .width = CLAY_SIZING_PERCENT(0.1),
-                                                              .height = CLAY_SIZING_PERCENT(1)},
-                                                          .padding = {20, 20, 20, 20},
-                                                        },
+                                               .layout = {
+                                                   .sizing = {
+                                                       .width = CLAY_SIZING_PERCENT(0.2),
+                                                       .height = CLAY_SIZING_PERCENT(1)},
+                                                   .padding = {20, 20, 20, 20},
+                                               },
                                            })
             {
             }
 
-            CLAY(CLAY_ID("area de trabajo"), {
-                                                 .backgroundColor = {90, 90, 90, 255},
-                                                 .cornerRadius = 8,
-                                                 .layout = {.sizing = {
-                                                                .width = CLAY_SIZING_GROW(),
-                                                                .height = CLAY_SIZING_GROW(),
-                                                            },
-                                                            .padding = {20, 20, 20, 20}}
-                                             })
+            CLAY(CLAY_ID("area de trabajo"), {.backgroundColor = colorobjeto,
+                                              .cornerRadius = 8,
+                                              .layout = {.sizing = {
+                                                             .width = CLAY_SIZING_GROW(),
+                                                             .height = CLAY_SIZING_GROW(),
+                                                         },
+                                                         .padding = {20, 20, 20, 20},
+                                                        .childGap = 30}})
             {
+                CLAY(CLAY_ID("ingresos"), {
+
+                                              .backgroundColor = colorfondo,
+                                              .cornerRadius = 8,
+                                              .layout = {.sizing = {
+                                                             .width = CLAY_SIZING_PERCENT(0.33),
+                                                             .height = CLAY_SIZING_PERCENT(0.2),
+                                                         },
+                                                         .padding = {10, 10, 10, 10}}})
+                {
+                   
+                }
+
+                CLAY(CLAY_ID("gastos"), {
+
+                                              .backgroundColor = colorfondo,
+                                              .cornerRadius = 8,
+                                              .layout = {.sizing = {
+                                                             .width = CLAY_SIZING_PERCENT(0.33),
+                                                             .height = CLAY_SIZING_PERCENT(0.2),
+                                                         },
+                                                         .padding = {10, 10, 10, 10}}})
+                {
+                }
+                CLAY(CLAY_ID("balance"), {
+
+                                              .backgroundColor = colorfondo,
+                                              .cornerRadius = 8,
+                                              .layout = {.sizing = {
+                                                             .width = CLAY_SIZING_PERCENT(0.33),
+                                                             .height = CLAY_SIZING_PERCENT(0.2),
+                                                         },
+                                                         .padding = {10, 10, 10, 10}}})
+                {
+                }
             }
         }
 
@@ -84,6 +131,7 @@ int main(void)
         Clay_Raylib_Render(renderCommands, NULL);
         EndDrawing();
     }
+
     free(claymemory.memory);
     return 0;
 }
