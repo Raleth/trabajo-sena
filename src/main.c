@@ -41,12 +41,7 @@ int main(void)
 
     const Clay_Color colorobjeto = {90, 90, 90, 255};
 
-    Font fonts[1];
-    fonts[FONT_ID_BODY_16] = LoadFontEx("fuente/LEMONMILK-Regular.otf", 48, 0, 400);
-    SetTextureFilter(fonts[FONT_ID_BODY_16].texture, TEXTURE_FILTER_BILINEAR);
-    Clay_SetMeasureTextFunction(Raylib_MeasureText, fonts);
 
-    
 
     while (!WindowShouldClose())
     { // aqui estan el inicio y final del ciclo de renderizado de CLAY
@@ -84,7 +79,7 @@ int main(void)
                                                              .height = CLAY_SIZING_GROW(),
                                                          },
                                                          .padding = {20, 20, 20, 20},
-                                                        .childGap = 30}})
+                                                         .childGap = 30}})
             {
                 CLAY(CLAY_ID("ingresos"), {
 
@@ -96,29 +91,29 @@ int main(void)
                                                          },
                                                          .padding = {10, 10, 10, 10}}})
                 {
-                   
+                
                 }
 
                 CLAY(CLAY_ID("gastos"), {
 
-                                              .backgroundColor = colorfondo,
-                                              .cornerRadius = 8,
-                                              .layout = {.sizing = {
-                                                             .width = CLAY_SIZING_PERCENT(0.33),
-                                                             .height = CLAY_SIZING_PERCENT(0.2),
-                                                         },
-                                                         .padding = {10, 10, 10, 10}}})
+                                            .backgroundColor = colorfondo,
+                                            .cornerRadius = 8,
+                                            .layout = {.sizing = {
+                                                           .width = CLAY_SIZING_PERCENT(0.33),
+                                                           .height = CLAY_SIZING_PERCENT(0.2),
+                                                       },
+                                                       .padding = {10, 10, 10, 10}}})
                 {
                 }
                 CLAY(CLAY_ID("balance"), {
 
-                                              .backgroundColor = colorfondo,
-                                              .cornerRadius = 8,
-                                              .layout = {.sizing = {
-                                                             .width = CLAY_SIZING_PERCENT(0.33),
-                                                             .height = CLAY_SIZING_PERCENT(0.2),
-                                                         },
-                                                         .padding = {10, 10, 10, 10}}})
+                                             .backgroundColor = colorfondo,
+                                             .cornerRadius = 8,
+                                             .layout = {.sizing = {
+                                                            .width = CLAY_SIZING_PERCENT(0.33),
+                                                            .height = CLAY_SIZING_PERCENT(0.2),
+                                                        },
+                                                        .padding = {10, 10, 10, 10}}})
                 {
                 }
             }
