@@ -91,7 +91,7 @@ int main(void)
                                                          },
                                                          .padding = {10, 10, 10, 10}}})
                 {
-                
+                    
                 }
 
                 CLAY(CLAY_ID("gastos"), {
