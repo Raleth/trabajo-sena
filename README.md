@@ -1,119 +1,118 @@
-# Budget Manager
+# Administrador de Presupuesto
 
-A desktop application for managing personal budget with income and expense tracking.
+Una aplicación de escritorio para gestionar el presupuesto personal con seguimiento de ingresos y gastos.
 
-## Prerequisites
+## Requisitos Previos
 
-Before running the project, you need to have the following installed on your Windows system:
+Antes de ejecutar el proyecto, necesitas tener instalado lo siguiente en tu sistema Windows:
 
-1. MinGW-w64 GCC Compiler
-   - Must be installed at: C:\mingw64\
-   - Download from: https://www.mingw-w64.org/
+1. Compilador MinGW-w64 GCC
+   - Debe estar instalado en: C:\mingw64\
+   - Descargar desde: https://www.mingw-w64.org/
 
-2. Git for Windows (optional, only if cloning from repository)
+2. Git para Windows (opcional, solo si vas a clonar desde un repositorio)
 
-## Project Structure
+## Estructura del Proyecto
 
-- src/ - Source code files
-- include/ - Header files (Clay UI and Raylib)
-- lib/ - Library files
-- bin/ - Compiled executable and DLL files
-- fuente/ - Font files
-- budget_data.csv - Your budget data storage file
+- src/ - Archivos de código fuente
+- include/ - Archivos de cabecera (Clay UI y Raylib)
+- lib/ - Archivos de bibliotecas
+- bin/ - Archivo ejecutable compilado y archivos DLL
+- fuente/ - Archivos de fuentes
+- budget_data.csv - Tu archivo de almacenamiento de datos del presupuesto
 
-## How to Build
+## Cómo Compilar
 
-1. Open PowerShell or Command Prompt
+1. Abre PowerShell o Símbolo del Sistema
 
-2. Navigate to the project directory:
+2. Navega al directorio del proyecto:
    ```
-   cd path\to\Ana_Transcriptor
+   cd ruta\a\Ana_Transcriptor
    ```
 
-3. Run the build script:
+3. Ejecuta el script de compilación:
    ```
    .\build_simple.bat
    ```
 
-The build script will:
-- Compile the source code
-- Link all libraries
-- Copy necessary DLL files to the bin folder
-- Automatically run the application
+El script de compilación hará lo siguiente:
+- Compilará el código fuente
+- Enlazará todas las bibliotecas
+- Copiará los archivos DLL necesarios a la carpeta bin
+- Ejecutará la aplicación automáticamente
 
-## How to Run
+## Cómo Ejecutar
 
-After building, you can run the application directly:
+Después de compilar, puedes ejecutar la aplicación directamente:
 
 ```
 .\bin\BudgetManager.exe
 ```
 
-Or simply run the build script again:
+O simplemente ejecutar el script de compilación de nuevo:
 
 ```
 .\build_simple.bat
 ```
 
-## Features
+## Características
 
-- Add income transactions
-- Add expense transactions
-- View total income, total expenses, and net balance
-- Save data to CSV file
-- Load data from CSV file
-- Export report to text file
-- Interactive graphical user interface
+- Agregar transacciones de ingresos
+- Agregar transacciones de gastos
+- Ver ingresos totales, gastos totales y saldo neto
+- Guardar datos en un archivo CSV
+- Cargar datos desde un archivo CSV
+- Exportar informe a un archivo de texto
+- Interfaz gráfica de usuario interactiva
 
-## Usage
+## Uso
 
-1. Add Income:
-   - Enter amount in the Amount field
-   - Enter description
-   - Click the blue "+ Add Income" button
+1. Agregar Ingreso:
+   - Ingresa el monto en el campo Cantidad
+   - Ingresa una descripción
+   - Haz clic en el botón azul "+ Agregar Ingreso"
 
-2. Add Expense:
-   - Enter amount in the Amount field
-   - Enter description
-   - Click the red "- Add Expense" button
+2. Agregar Gasto:
+   - Ingresa el monto en el campo Cantidad
+   - Ingresa una descripción
+   - Haz clic en el botón rojo "- Agregar Gasto"
 
-3. Save Data:
-   - Click "Save to CSV" button to save your transactions
+3. Guardar Datos:
+   - Haz clic en el botón "Guardar en CSV" para guardar tus transacciones
 
-4. Load Data:
-   - Click "Load from CSV" button to load saved transactions
+4. Cargar Datos:
+   - Haz clic en el botón "Cargar desde CSV" para cargar las transacciones guardadas
 
-5. View Transactions:
-   - All transactions are displayed in the list with type, amount, description, and date
+5. Ver Transacciones:
+   - Todas las transacciones se muestran en la lista con tipo, monto, descripción y fecha
 
-## Data Storage
+## Almacenamiento de Datos
 
-All budget data is stored in the budget_data.csv file in the project root directory. This file is automatically created when you save your data.
+Todos los datos del presupuesto se almacenan en el archivo budget_data.csv en el directorio raíz del proyecto. Este archivo se crea automáticamente cuando guardas tus datos.
 
-## Troubleshooting
+## Resolución de Problemas
 
-1. If the application does not start:
-   - Make sure MinGW-w64 is installed at C:\mingw64\
-   - Check that all DLL files are present in the bin folder
+1. Si la aplicación no inicia:
+   - Asegúrate de que MinGW-w64 esté instalado en C:\mingw64\
+   - Verifica que todos los archivos DLL estén presentes en la carpeta bin
 
-2. If you get compilation errors:
-   - Verify that gcc.exe is in your PATH or at C:\mingw64\bin\gcc.exe
-   - Make sure all required files are present in the project
+2. Si obtienes errores de compilación:
+   - Verifica que gcc.exe esté en tu PATH o en C:\mingw64\bin\gcc.exe
+   - Asegúrate de que todos los archivos requeridos estén presentes en el proyecto
 
-3. If the window appears blank:
-   - Check that the fuente folder contains the Roboto-Regular.ttf font file
+3. Si la ventana aparece en blanco:
+   - Verifica que la carpeta fuente contenga el archivo de fuente Roboto-Regular.ttf
 
-## System Requirements
+## Requisitos del Sistema
 
-- Windows 7 or later
-- 4GB RAM minimum
-- 50MB free disk space
-- Display resolution: 1280x720 or higher
+- Windows 7 o posterior
+- Mínimo 4GB de RAM
+- 50MB de espacio libre en disco
+- Resolución de pantalla: 1280x720 o superior
 
-## Credits
+## Créditos
 
-Built with:
-- Raylib - Graphics library
-- Clay UI - Layout engine
-- MinGW-w64 GCC - Compiler
-
+Construido con:
+- Raylib - Biblioteca gráfica
+- Clay UI - Motor de diseño
+- MinGW-w64 GCC - Compilador
