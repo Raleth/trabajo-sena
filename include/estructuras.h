@@ -1,6 +1,5 @@
 #ifndef datos
-#define datos 
-// Contenido del header
+#define datos
 
 // ===== DATA STRUCTURES =====
 typedef enum {

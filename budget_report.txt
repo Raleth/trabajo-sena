@@ -2,19 +2,11 @@
       BUDGET MANAGER REPORT
 ====================================
 
-Total Income:   $56.00
-Total Expenses: $33.00
-Net Balance:    $23.00
+Total Income:   $0.00
+Total Expenses: $0.00
+Net Balance:    $0.00
 
 ====================================
          TRANSACTION LIST
 ====================================
-
-[15/12/2025] INCOME
-    Amount: $56.00
-    Description: comida
-
-[15/12/2025] EXPENSE
-    Amount: $33.00
-    Description: luz
 

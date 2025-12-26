@@ -7,7 +7,6 @@
 #include <time.h>
 #include "estructuras.h"
 
-
 // ===== GLOBAL STATE =====
 Budget budget = {0};
 UIState uiState = {0};
