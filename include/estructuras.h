@@ -36,9 +36,11 @@ typedef struct {
 } UIState;
 
 //CONSTANTES
-const int altura = 720;  // altura
-const int ancho = 1280;  // ancho
-
-
-
+const int altura = 720;
+const int ancho = 1280;
 #endif
+
+//Definiciones de Idiomas.c
+extern int idioma_global; // extern para acceder a la variable global del idioma
+
+const char* get_text(const char *clave); // Prototipo de la función para obtener texto traducido

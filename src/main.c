@@ -166,7 +166,7 @@ Clay_String Clay_MakeString(const char* str) {
 
 int main(void)
 {
-    Clay_Raylib_Initialize(ancho, altura, "Budget Manager - University Project", 
+    Clay_Raylib_Initialize(ancho, altura,get_text("WELCOME"), 
                           FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_HIGHDPI | FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT);
 
     SetTargetFPS(60);

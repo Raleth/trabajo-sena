@@ -11,6 +11,7 @@ set PATH=C:\msys64\mingw64\bin;%PATH%
 REM Compile
 echo Compiling main.c...
 gcc -Iinclude -Wall -Wextra -O2 -c src/main.c -o build/main.o
+gcc -Iinclude -Wall -Wextra -O2 -c idiomas/idiomas.c -o build/idiomas.o
 if %ERRORLEVEL% NEQ 0 (
     echo Compilation failed!
     pause
@@ -19,7 +20,7 @@ if %ERRORLEVEL% NEQ 0 (
 
 REM Link
 echo Linking...
-gcc build/main.o -o bin/BudgetManager.exe -lraylib -lopengl32 -lgdi32 -lwinmm -lshell32
+gcc build/main.o build/idiomas.o -o bin/BudgetManager.exe -lraylib -lopengl32 -lgdi32 -lwinmm -lshell32
 if %ERRORLEVEL% NEQ 0 (
     echo Linking failed!
     pause
