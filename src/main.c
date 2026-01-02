@@ -35,7 +35,7 @@ void UpdateBudgetTotals() {
 
 void AddTransaction(TransactionType type, float amount, const char* description) {
     if (budget.count >= 1000) {
-        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), "Error: Maximum transactions reached!");
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),get_text("MENSAJE_MAXIMA_CANTIDAD_TRANSACCIONES"));
         uiState.statusMessageTime = 3.0f;
         return;
     }
@@ -64,14 +64,14 @@ void DeleteTransaction(int index) {
     budget.count--;
     UpdateBudgetTotals();
     
-    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), "Transaction deleted");
+    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),get_text("TRANSACCION_BORRADA"));
     uiState.statusMessageTime = 2.0f;
 }
 
 void SaveBudgetToCSV(const char* filename) {
     FILE* file = fopen(filename, "w");
     if (!file) {
-        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), "Error: Could not save file!");
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), get_text("GUARDADO_FALLIDO"));
         uiState.statusMessageTime = 3.0f;
         return;
     }
@@ -92,7 +92,7 @@ void SaveBudgetToCSV(const char* filename) {
 void LoadBudgetFromCSV(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (!file) {
-        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), "Error: Could not open file!");
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), get_text("FALLO_AL_ABRIR"));
         uiState.statusMessageTime = 3.0f;
         return;
     }
@@ -124,7 +124,7 @@ void LoadBudgetFromCSV(const char* filename) {
 void SaveBudgetToTXT(const char* filename) {
     FILE* file = fopen(filename, "w");
     if (!file) {
-        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), "Error: Could not save file!");
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), get_text("GUARDADO_FALLIDO"));
         uiState.statusMessageTime = 3.0f;
         return;
     }
@@ -166,7 +166,7 @@ Clay_String Clay_MakeString(const char* str) {
 
 int main(void)
 {
-    Clay_Raylib_Initialize(ancho, altura,get_text("WELCOME"), 
+    Clay_Raylib_Initialize(ancho, altura,get_text("TITULO_VENTANA"), 
                           FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_HIGHDPI | FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT);
 
     SetTargetFPS(60);
@@ -274,7 +274,7 @@ int main(void)
                 CLAY(CLAY_ID("sidebar_title"), {
                     .layout = {.sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIXED(40)}}
                 }) {
-                    CLAY_TEXT(CLAY_STRING("Add Transaction"), CLAY_TEXT_CONFIG({
+                    CLAY_TEXT(Clay_MakeString(get_text("TITULO_VENTANA")), CLAY_TEXT_CONFIG({
                         .fontId = TU_FONT_ID, .fontSize = 24, .textColor = colorText
                     }));
                 }
@@ -781,4 +781,5 @@ int main(void)
     free(claymemory.memory);
     Clay_Raylib_Close();
     return 0;
+
 }

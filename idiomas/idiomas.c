@@ -14,9 +14,12 @@ typedef struct {
 } ParClaveValor;
 
 const ParClaveValor mensajes_es[] = {
-    {"WELCOME", "Bienvenido a tu gestor de presupuestos."},
-    {"SAVE_SUCCESS", "Datos guardados correctamente."},
-    {"LOAD_ERROR", "Error al cargar el archivo."},
+    {"TITULO_VENTANA", "Bienvenido a tu gestor de presupuestos."},
+    {"MENSAJE_MAXIMA_CANTIDAD_TRANSACCIONES", "error: ¡Cantidad máxima de transacciones alcanzada!"},
+    {"TRANSACCION_BORRADA", "Transacción eliminada"},
+    {"GUARDADO_FALLIDO", "Error al guardar el archivo."},
+    {"FALLO_AL_ABRIR", "Error: No se pudo abrir el archivo."},
+    {"AÑADIR_TRANSACCION", "Añadir Transacción"},
     {"TOTAL_LABEL", "Total del mes:"},
     {NULL, NULL}
 };
@@ -26,7 +29,7 @@ const ParClaveValor mensajes_en[] = {
     {"SAVE_SUCCESS", "data saved successfully."},
     {"LOAD_ERROR", "Error loading file."},
     {"TOTAL_LABEL", "Monthly total:"},
-    {NULL, NULL} // Marca el final
+    {NULL, NULL}
 };
 
 const ParClaveValor* obtener_catalogo() {
