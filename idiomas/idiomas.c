@@ -15,12 +15,31 @@ typedef struct {
 
 const ParClaveValor mensajes_es[] = {
     {"TITULO_VENTANA", "Bienvenido a tu gestor de presupuestos."},
+    {"CANTIDAD","Cantidad: "},
     {"MENSAJE_MAXIMA_CANTIDAD_TRANSACCIONES", "error: ¡Cantidad máxima de transacciones alcanzada!"},
     {"TRANSACCION_BORRADA", "Transacción eliminada"},
     {"GUARDADO_FALLIDO", "Error al guardar el archivo."},
     {"FALLO_AL_ABRIR", "Error: No se pudo abrir el archivo."},
     {"AÑADIR_TRANSACCION", "Añadir Transacción"},
-    {"TOTAL_LABEL", "Total del mes:"},
+    {"DESCRIPCION", "Descripcion: "},
+    {"AÑADIR_INGRESO", "Añadir Ingreso"},
+    {"AÑADIR_GASTO", "Añadir Gasto"},
+    {"OPERACIONES_DE_ARCHIVO", "Operaciones de archivo"},
+    {"GUARDAR_CSV"," Guardar como CSV"},
+    {"CARGAR_CSV"," Cargar CSV"},
+    {"EXPORTAR_REPORTE"," Exportar Reporte en TXT"},
+    {"TOTAL_INGRESOS", "Total de Ingresos: "},
+    {"TOTAL_GASTOS", "Total de Gastos: "},
+    {"BALANCE_NETO", "Balance Neto: "},
+    {"NOTIFICACION","Aún no hay transacciones. ¡Agrega la primera!"},
+    {"ERROR_VALIDACION", "Por favor, introduce una cantidad y descripción válidas"},
+    {"INGRESO", "Ingreso"},
+    {"GASTO", "Gasto"},
+    {"AÑADIDO_FORMATO", "%s añadido: $%.2f"},
+    {"ENTRADA_INVALIDA", "Entrada inválida. Por favor, inténtalo de nuevo."},
+    {"GUARDADO_EN", "Guardado en %s"},
+    {"CARGADO_DESDE", "Cargado desde %s (%d transacciones)"},
+    {"REPORTE_GUARDADO_EN", "Reporte guardado en %s"},
     {NULL, NULL}
 };
 

@@ -1,6 +1,6 @@
 # Configuración del compilador y flags
 CC = gcc
-CFLAGS = -Iinclude -Wall -Wextra -O2
+CFLAGS = -Iinclude -Wall -Wextra -O0
 LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm -lshell32
 
 # Directorios
@@ -49,20 +49,20 @@ $(BUILD_DIR)/idiomas.o: $(IDIOMAS_DIR)/idiomas.c | $(BUILD_DIR)
 
 # Reglas para crear directorios necesarios
 $(BUILD_DIR):
-	@if not exist "$(BUILD_DIR)" mkdir "$(BUILD_DIR)"
+	@mkdir -p $(BUILD_DIR)
 
 $(BIN_DIR):
-	@if not exist "$(BIN_DIR)" mkdir "$(BIN_DIR)"
+	@mkdir -p $(BIN_DIR)
 
 # Regla para ejecutar la aplicación
 run: $(EXECUTABLE)
 	@echo Running application...
-	start $(EXECUTABLE)
+	cmd //c start $(EXECUTABLE)
 
 # Regla para limpiar archivos generados
 clean:
-	@if exist "$(BUILD_DIR)" rmdir /s /q "$(BUILD_DIR)"
-	@if exist "$(BIN_DIR)" rmdir /s /q "$(BIN_DIR)"
+	@rm -rf $(BUILD_DIR)
+	@rm -rf $(BIN_DIR)
 
 # Regla para limpiar y recompilar desde cero
 rebuild: clean all

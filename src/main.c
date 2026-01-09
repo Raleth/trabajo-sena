@@ -51,7 +51,9 @@ void AddTransaction(TransactionType type, float amount, const char* description)
     UpdateBudgetTotals();
     
     snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
-             "%s added: $%.2f", type == TRANSACTION_INCOME ? "Income" : "Expense", amount);
+         get_text("AÑADIDO_FORMATO"), 
+         type == TRANSACTION_INCOME ? get_text("INGRESO") : get_text("GASTO"), 
+         amount);
     uiState.statusMessageTime = 2.0f;
 }
 
@@ -85,7 +87,8 @@ void SaveBudgetToCSV(const char* filename) {
     }
     
     fclose(file);
-    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), "Saved to %s", filename);
+    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+         get_text("GUARDADO_EN"), filename);  
     uiState.statusMessageTime = 2.0f;
 }
 
@@ -117,7 +120,8 @@ void LoadBudgetFromCSV(const char* filename) {
     
     fclose(file);
     UpdateBudgetTotals();
-    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), "Loaded from %s (%d transactions)", filename, budget.count);
+    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+         get_text("CARGADO_DESDE"), filename, budget.count);
     uiState.statusMessageTime = 2.0f;
 }
 
@@ -147,7 +151,8 @@ void SaveBudgetToTXT(const char* filename) {
     }
     
     fclose(file);
-    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), "Report saved to %s", filename);
+    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+         get_text("REPORTE_GUARDADO_EN"), filename); 
     uiState.statusMessageTime = 2.0f;
 }
 
@@ -283,7 +288,7 @@ int main(void)
                 CLAY(CLAY_ID("amount_label"), {
                     .layout = {.sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIXED(25)}}
                 }) {
-                    CLAY_TEXT(CLAY_STRING("Amount ($):"), CLAY_TEXT_CONFIG({
+                    CLAY_TEXT(Clay_MakeString(get_text("CANTIDAD")), CLAY_TEXT_CONFIG({
                         .fontId = TU_FONT_ID, .fontSize = 16, .textColor = colorText
                     }));
                 }
@@ -309,7 +314,7 @@ int main(void)
                 CLAY(CLAY_ID("desc_label"), {
                     .layout = {.sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIXED(25)}}
                 }) {
-                    CLAY_TEXT(CLAY_STRING("Description:"), CLAY_TEXT_CONFIG({
+                    CLAY_TEXT(Clay_MakeString(get_text("DESCRIPCION")), CLAY_TEXT_CONFIG({
                         .fontId = TU_FONT_ID, .fontSize = 16, .textColor = colorText
                     }));
                 }
@@ -341,7 +346,7 @@ int main(void)
                         .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}
                     }
                 }) {
-                    CLAY_TEXT(CLAY_STRING("+ Add Income"), CLAY_TEXT_CONFIG({
+                    CLAY_TEXT(Clay_MakeString(get_text("AÑADIR_INGRESO")), CLAY_TEXT_CONFIG({
                         .fontId = 0,
                         .fontSize = 18,
                         .textColor = {255, 255, 255, 255}
@@ -358,7 +363,7 @@ int main(void)
                         .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}
                     }
                 }) {
-                    CLAY_TEXT(CLAY_STRING("- Add Expense"), CLAY_TEXT_CONFIG({
+                    CLAY_TEXT(Clay_MakeString(get_text("AÑADIR_GASTO")), CLAY_TEXT_CONFIG({
                         .fontId = 0,
                         .fontSize = 18,
                         .textColor = {255, 255, 255, 255}
@@ -374,7 +379,7 @@ int main(void)
                 CLAY(CLAY_ID("file_ops_title"), {
                     .layout = {.sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIXED(30)}}
                 }) {
-                    CLAY_TEXT(CLAY_STRING("File Operations"), CLAY_TEXT_CONFIG({
+                    CLAY_TEXT(Clay_MakeString(get_text("OPERACIONES_DE_ARCHIVO")), CLAY_TEXT_CONFIG({
                         .fontId = TU_FONT_ID, .fontSize = 20, .textColor = colorText
                     }));
                 }
@@ -388,7 +393,7 @@ int main(void)
                         .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}
                     }
                 }) {
-                    CLAY_TEXT(CLAY_STRING("Save to CSV"), CLAY_TEXT_CONFIG({
+                    CLAY_TEXT(Clay_MakeString(get_text("GUARDAR_CSV")), CLAY_TEXT_CONFIG({
                         .fontId = 0,
                         .fontSize = 16,
                         .textColor = {255, 255, 255, 255}
@@ -404,7 +409,7 @@ int main(void)
                         .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}
                     }
                 }) {
-                    CLAY_TEXT(CLAY_STRING("Load from CSV"), CLAY_TEXT_CONFIG({
+                    CLAY_TEXT(Clay_MakeString(get_text("CARGAR_CSV")), CLAY_TEXT_CONFIG({
                         .fontId = 0,
                         .fontSize = 16,
                         .textColor = {255, 255, 255, 255}
@@ -420,7 +425,7 @@ int main(void)
                         .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}
                     }
                 }) {
-                    CLAY_TEXT(CLAY_STRING("Export Report (TXT)"), CLAY_TEXT_CONFIG({
+                    CLAY_TEXT(Clay_MakeString(get_text("EXPORTAR_REPORTE")), CLAY_TEXT_CONFIG({
                         .fontId = 0,
                         .fontSize = 16,
                         .textColor = {255, 255, 255, 255}
@@ -478,7 +483,7 @@ int main(void)
                         }
                     })
                     {
-                        CLAY_TEXT(CLAY_STRING("TOTAL INCOME"), CLAY_TEXT_CONFIG({
+                        CLAY_TEXT(Clay_MakeString(get_text("TOTAL_INGRESOS")), CLAY_TEXT_CONFIG({
                             .fontId = TU_FONT_ID, .fontSize = 16, .textColor = {220, 255, 220, 255}
                         }));
                         
@@ -500,7 +505,7 @@ int main(void)
                         }
                     })
                     {
-                        CLAY_TEXT(CLAY_STRING("TOTAL EXPENSES"), CLAY_TEXT_CONFIG({
+                        CLAY_TEXT(Clay_MakeString(get_text("TOTAL_GASTOS")), CLAY_TEXT_CONFIG({
                             .fontId = TU_FONT_ID, .fontSize = 16, .textColor = {255, 220, 220, 255}
                         }));
                         
@@ -523,7 +528,7 @@ int main(void)
                         }
                     })
                     {
-                        CLAY_TEXT(CLAY_STRING("NET BALANCE"), CLAY_TEXT_CONFIG({
+                        CLAY_TEXT(Clay_MakeString(get_text("BALANCE_NETO")), CLAY_TEXT_CONFIG({
                             .fontId = TU_FONT_ID, .fontSize = 16, .textColor = {220, 220, 255, 255}
                         }));
                         
@@ -564,7 +569,7 @@ int main(void)
                                 .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}
                             }
                         }) {
-                            CLAY_TEXT(CLAY_STRING("No transactions yet. Add your first one!"), 
+                            CLAY_TEXT(Clay_MakeString(get_text("NOTIFICACION")), 
                                     CLAY_TEXT_CONFIG({
                                 .fontId = TU_FONT_ID, .fontSize = 16, 
                                 .textColor = {150, 150, 150, 255}
@@ -728,7 +733,7 @@ int main(void)
                 uiState.descriptionInput[0] = '\0';
             } else {
                 snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
-                        "Please enter valid amount and description");
+                        get_text("ENTRADA_INVALIDA"));
                 uiState.statusMessageTime = 2.0f;
             }
         }
@@ -742,7 +747,7 @@ int main(void)
                 uiState.descriptionInput[0] = '\0';
             } else {
                 snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
-                        "Please enter valid amount and description");
+                        get_text("ENTRADA_INVALIDA"));
                 uiState.statusMessageTime = 2.0f;
             }
         }
