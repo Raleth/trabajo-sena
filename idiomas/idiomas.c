@@ -40,6 +40,15 @@ const ParClaveValor mensajes_es[] = {
     {"GUARDADO_EN", "Guardado en %s"},
     {"CARGADO_DESDE", "Cargado desde %s (%d transacciones)"},
     {"REPORTE_GUARDADO_EN", "Reporte guardado en %s"},
+    {"TOTAL_INGRESOS", "Total de Ingresos: $"},
+    {"TOTAL_GASTOS", "Total de Gastos: $"},
+    {"BALANCE_NETO", "Balance Neto: $"},
+    {"TITULO_REPORTE", "INFORME DE GESTOR DE PRESUPUESTO"},
+    {"LISTA_TRANSACCIONES", "LISTA DE TRANSACCIONES"},
+    {"INGRESO_MAYUS", "INGRESO"},
+    {"GASTO_MAYUS", "GASTO"},
+    {"ETIQUETA_MONTO", "Monto:"},
+    {"ETIQUETA_DESCRIPCION", "Descripción:"},
     {NULL, NULL}
 };
 

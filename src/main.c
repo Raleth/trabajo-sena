@@ -134,20 +134,23 @@ void SaveBudgetToTXT(const char* filename) {
     }
     
     fprintf(file, "====================================\n");
-    fprintf(file, "      BUDGET MANAGER REPORT\n");
+    fprintf(file, "      %s\n", get_text("TITULO_REPORTE"));
     fprintf(file, "====================================\n\n");
-    fprintf(file, "Total Income:   $%.2f\n", budget.totalIncome);
-    fprintf(file, "Total Expenses: $%.2f\n", budget.totalExpense);
-    fprintf(file, "Net Balance:    $%.2f\n\n", budget.balance);
-    fprintf(file, "====================================\n");
-    fprintf(file, "         TRANSACTION LIST\n");
+    fprintf(file, "%s $%.2f\n", get_text("TOTAL_INGRESOS"), budget.totalIncome);
+    fprintf(file, "%s $%.2f\n", get_text("TOTAL_GASTOS"), budget.totalExpense);
+    fprintf(file, "%s $%.2f\n\n", get_text("BALANCE_NETO"), budget.balance);
+    fprintf(file, "         %s\n", get_text("LISTA_TRANSACCIONES"));
     fprintf(file, "====================================\n\n");
     
     for (int i = 0; i < budget.count; i++) {
         Transaction* t = &budget.transactions[i];
-        fprintf(file, "[%s] %s\n", t->date, t->type == TRANSACTION_INCOME ? "INCOME" : "EXPENSE");
-        fprintf(file, "    Amount: $%.2f\n", t->amount);
-        fprintf(file, "    Description: %s\n\n", t->description);
+        // Tipo de transacción internacionalizado
+        const char* tipoTexto = t->type == TRANSACTION_INCOME ? 
+                               get_text("INGRESO_MAYUS") : get_text("GASTO_MAYUS");
+        
+        fprintf(file, "[%s] %s\n", t->date, tipoTexto);
+        fprintf(file, "    %s $%.2f\n", get_text("ETIQUETA_MONTO"), t->amount);
+        fprintf(file, "    %s %s\n\n", get_text("ETIQUETA_DESCRIPCION"), t->description);
     }
     
     fclose(file);

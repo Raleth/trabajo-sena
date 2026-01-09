@@ -1,12 +1,19 @@
 ====================================
-      BUDGET MANAGER REPORT
+      INFORME DE GESTOR DE PRESUPUESTO
 ====================================
 
-Total Income:   $0.00
-Total Expenses: $0.00
-Net Balance:    $0.00
+Total de Ingresos:  $111.00
+Total de Gastos:  $222.00
+Balance Neto:  $-111.00
 
+         LISTA DE TRANSACCIONES
 ====================================
-         TRANSACTION LIST
-====================================
+
+[09/01/2026] INGRESO
+    Monto: $111.00
+    Descripción: 111
+
+[09/01/2026] GASTO
+    Monto: $222.00
+    Descripción: 222
 
