@@ -2,18 +2,26 @@
       INFORME DE GESTOR DE PRESUPUESTO
 ====================================
 
-Total de Ingresos:  $111.00
-Total de Gastos:  $222.00
-Balance Neto:  $-111.00
+Total de Ingresos:  $44.00
+Total de Gastos:  $38.00
+Balance Neto:  $6.00
 
          LISTA DE TRANSACCIONES
 ====================================
 
-[09/01/2026] INGRESO
-    Monto: $111.00
-    Descripción: 111
+[13/01/2026] INGRESO
+    Monto: $22.00
+    Descripción: 22
 
-[09/01/2026] GASTO
-    Monto: $222.00
-    Descripción: 222
+[13/01/2026] INGRESO
+    Monto: $22.00
+    Descripción: 22
+
+[13/01/2026] GASTO
+    Monto: $33.00
+    Descripción: 33
+
+[13/01/2026] GASTO
+    Monto: $5.00
+    Descripción: 5
 

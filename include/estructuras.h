@@ -35,12 +35,26 @@ typedef struct {
     char balanceText[64];
 } UIState;
 
+// ===== ESTADO GLOBAL =====
+extern Budget budget;
+extern UIState uiState;
+// ===== FUNCIONES DE TRANSACCIONES =====
+const char* get_text(const char *clave);
+void UpdateBudgetTotals(void);
+void GetCurrentDate(char* buffer, size_t size);
+void AddTransaction(TransactionType type, float amount, const char* description);
+void DeleteTransaction(int index);
+void SaveBudgetToCSV(const char* filename);
+void LoadBudgetFromCSV(const char* filename);
+void SaveBudgetToTXT(const char* filename);
+
 //CONSTANTES
-const int altura = 720;
-const int ancho = 1280;
-#endif
+extern const int altura;
+extern const int ancho;
 
 //Definiciones de Idiomas.c
 extern int idioma_global; // extern para acceder a la variable global del idioma
 
 const char* get_text(const char *clave); // Prototipo de la función para obtener texto traducido
+
+#endif

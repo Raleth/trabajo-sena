@@ -11,7 +11,8 @@ BIN_DIR = bin
 EXECUTABLE = $(BIN_DIR)/BudgetManager.exe
 
 # Archivos fuente
-SRC_FILES = $(SRC_DIR)/main.c $(IDIOMAS_DIR)/idiomas.c
+SRC_FILES = $(SRC_DIR)/main.c $(IDIOMAS_DIR)/idiomas.c \
+			$(SRC_DIR)/transacciones.c
 # Archivos objeto (cambia .c por .o y cambia directorio)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(filter $(SRC_DIR)/%, $(SRC_FILES))) \
             $(patsubst $(IDIOMAS_DIR)/%.c, $(BUILD_DIR)/%.o, $(filter $(IDIOMAS_DIR)/%, $(SRC_FILES)))
@@ -44,6 +45,11 @@ $(BUILD_DIR)/main.o: $(SRC_DIR)/main.c | $(BUILD_DIR)
 
 # Regla para compilar idiomas.c -> build/idiomas.o
 $(BUILD_DIR)/idiomas.o: $(IDIOMAS_DIR)/idiomas.c | $(BUILD_DIR)
+	@echo Compiling $<...
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Regla para compilar transacciones.c -> build/transacciones.o
+$(BUILD_DIR)/transacciones.o: $(SRC_DIR)/transacciones.c | $(BUILD_DIR)
 	@echo Compiling $<...
 	$(CC) $(CFLAGS) -c $< -o $@
 
