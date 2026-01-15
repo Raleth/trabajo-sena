@@ -614,7 +614,7 @@ int main(void)
         
         // Load CSV Button
         if (Clay_PointerOver(btn_load_csv_id) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            LoadBudgetFromCSV("budget_data.csv");
+            LoadBudgetFromCSV();
         }
         
         // Export TXT Button

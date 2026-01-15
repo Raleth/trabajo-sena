@@ -45,7 +45,7 @@ void GetCurrentDate(char* buffer, size_t size);
 void AddTransaction(TransactionType type, float amount, const char* description);
 void DeleteTransaction(int index);
 void SaveBudgetToCSV(void);
-void LoadBudgetFromCSV(const char* filename);
+void LoadBudgetFromCSV(void);
 void SaveBudgetToTXT(const char* filename);
 
 //CONSTANTES
@@ -56,5 +56,16 @@ extern const int ancho;
 extern int idioma_global; // extern para acceder a la variable global del idioma
 
 const char* get_text(const char *clave); // Prototipo de la función para obtener texto traducido
+
+//texto adicionales
+#define MSG_FALLO_AL_ABRIR "No se pudo abrir el archivo"
+#define MSG_ERROR_SELECCION "Error al seleccionar archivo"
+#define MSG_CANCELADO "Operación cancelada"
+#define MSG_ARCHIVO_VACIO "El archivo está vacío"
+#define MSG_FORMATO_INVALIDO "Formato de archivo inválido"
+#define MSG_CARGADO_CON_ERRORES "Cargadas %d transacciones (%d errores)"
+#define MSG_CARGADO_EXITOSO "%d transacciones cargadas exitosamente"
+#define MSG_ERROR_LINEAS "%d líneas con formato incorrecto"
+#define MSG_SIN_DATOS "No se encontraron datos válidos"
 
 #endif

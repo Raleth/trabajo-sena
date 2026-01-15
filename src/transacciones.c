@@ -3,7 +3,8 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include <string.h>
+#include <windows.h>
+#include <commdlg.h>
 #include "estructuras.h"
 
 Budget budget = {0};
@@ -69,29 +70,6 @@ void DeleteTransaction(int index) {
     snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),get_text("TRANSACCION_BORRADA"));
     uiState.statusMessageTime = 2.0f;
 }
-/*
-void SaveBudgetToCSV(const char* filename) {
-    FILE* file = fopen(filename, "w");
-    if (!file) {
-        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), get_text("GUARDADO_FALLIDO"));
-        uiState.statusMessageTime = 3.0f;
-        return;
-    }
-    
-    fprintf(file, "Type,Amount,Description,Date\n");
-    for (int i = 0; i < budget.count; i++) {
-        Transaction* t = &budget.transactions[i];
-        fprintf(file, "%s,%.2f,%s,%s\n", 
-                t->type == TRANSACTION_INCOME ? "Income" : "Expense",
-                t->amount, t->description, t->date);
-    }
-    
-    fclose(file);
-    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
-         get_text("GUARDADO_EN"), filename);  
-    uiState.statusMessageTime = 2.0f;
-}
-*/
 
 void SaveBudgetToCSV(void) {
     // 1. Obtener la frase base para el nombre del archivo
@@ -161,40 +139,185 @@ void SaveBudgetToCSV(void) {
     uiState.statusMessageTime = 2.0f;
 }
 
-
-void LoadBudgetFromCSV(const char* filename) {
+void LoadBudgetFromCSV() {
+    // 1. Configurar y mostrar diálogo de selección de archivos
+    OPENFILENAMEA ofn;
+    char filename[MAX_PATH] = "";
+    
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFilter = "CSV Files (*.csv)\0*.csv\0All Files (*.*)\0*.*\0";
+    ofn.lpstrFile = filename;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    ofn.lpstrDefExt = "csv";
+    ofn.lpstrTitle = "Select Budget CSV File";
+    
+    // Mostrar diálogo de selección
+    if (!GetOpenFileNameA(&ofn)) {
+        // Usuario canceló o hubo error
+        if (CommDlgExtendedError()) {
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+                     get_text("ERROR_SELECCION"));
+        } else {
+            // Usuario simplemente canceló, no mostrar error
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+                     get_text("CANCELADO"));
+        }
+        uiState.statusMessageTime = 2.0f;
+        return;
+    }
+    
+    // 2. Abrir archivo seleccionado
     FILE* file = fopen(filename, "r");
     if (!file) {
-        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), get_text("FALLO_AL_ABRIR"));
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+                 get_text("FALLO_AL_ABRIR"));
         uiState.statusMessageTime = 3.0f;
         return;
     }
     
+    // 3. Reiniciar presupuesto actual
     budget.count = 0;
-    char line[512];
+    char line[1024];  // Aumentado de 512 a 1024 para líneas más largas
+    
+    // 4. Leer y validar encabezado
     if (!fgets(line, sizeof(line), file)) {
         fclose(file);
-        return;  // Empty file or header missing
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+                 get_text("ARCHIVO_VACIO"));
+        uiState.statusMessageTime = 3.0f;
+        return;
     }
     
+    // Verificar formato básico del encabezado
+    char headerCheck[256];
+    if (sscanf(line, "%255[^\n]", headerCheck) != 1) {
+        fclose(file);
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+                 get_text("FORMATO_INVALIDO"));
+        uiState.statusMessageTime = 3.0f;
+        return;
+    }
+    
+    // 5. Leer transacciones con mejor manejo de errores
+    int lineNum = 1;  // Para mensajes de error detallados
+    int loadedCount = 0;
+    int errorCount = 0;
+    
     while (fgets(line, sizeof(line), file) && budget.count < 1000) {
+        lineNum++;
+        
+        // Saltar líneas vacías o solo espacios
+        int isEmpty = 1;
+        for (char* p = line; *p; p++) {
+            if (!isspace(*p) && *p != '\0') {
+                isEmpty = 0;
+                break;
+            }
+        }
+        if (isEmpty) continue;
+        
         Transaction* t = &budget.transactions[budget.count];
         char typeStr[32];
+        char amountStr[64];
+        char description[256];
+        char date[32];
         
-        if (sscanf(line, "%[^,],%f,%[^,],%[^\n]", 
-                   typeStr, &t->amount, t->description, t->date) == 4) {
-            t->type = (strcmp(typeStr, "Income") == 0) ? TRANSACTION_INCOME : TRANSACTION_EXPENSE;
+        // Limpiar buffers
+        memset(typeStr, 0, sizeof(typeStr));
+        memset(amountStr, 0, sizeof(amountStr));
+        memset(description, 0, sizeof(description));
+        memset(date, 0, sizeof(date));
+        
+        // Parsear con mejor manejo de errores
+        int parsed = sscanf(line, "%31[^,],%63[^,],%255[^,],%31[^\n\r]", 
+                           typeStr, amountStr, description, date);
+        
+        if (parsed == 4) {
+            // Convertir monto de string a float con validación
+            char* endptr;
+            t->amount = (float)strtod(amountStr, &endptr);
+            if (endptr == amountStr || *endptr != '\0') {
+                // Error en conversión numérica
+                errorCount++;
+                continue;
+            }
+            
+            // Validar y limpiar descripción (remover comillas si existen)
+            if (description[0] == '"' && description[strlen(description)-1] == '"') {
+                // Remover comillas exteriores
+                memmove(description, description+1, strlen(description)-2);
+                description[strlen(description)-2] = '\0';
+            }
+            
+            // Validar tipo de transacción
+            if (strcmp(typeStr, "Income") == 0) {
+                t->type = TRANSACTION_INCOME;
+            } else if (strcmp(typeStr, "Expense") == 0) {
+                t->type = TRANSACTION_EXPENSE;
+            } else {
+                errorCount++;
+                continue;
+            }
+            
+            // Validar fecha básica (debería tener 10 caracteres para YYYY-MM-DD)
+            if (strlen(date) < 8) {
+                errorCount++;
+                continue;
+            }
+            
+            // Copiar datos validados
+            strncpy(t->description, description, sizeof(t->description)-1);
+            t->description[sizeof(t->description)-1] = '\0';
+            
+            strncpy(t->date, date, sizeof(t->date)-1);
+            t->date[sizeof(t->date)-1] = '\0';
+            
             budget.count++;
+            loadedCount++;
+        } else {
+            errorCount++;
+            // Opcional: Log detallado del error
+            #ifdef DEBUG_MODE
+            printf("Error parsing line %d: %s\n", lineNum, line);
+            #endif
         }
     }
     
     fclose(file);
-    UpdateBudgetTotals();
-    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
-         get_text("CARGADO_DESDE"), filename, budget.count);
-    uiState.statusMessageTime = 2.0f;
+    
+    // 6. Actualizar y mostrar resultados
+    if (budget.count > 0) {
+        UpdateBudgetTotals();
+        
+        if (errorCount > 0) {
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),
+                     get_text("CARGADO_CON_ERRORES"), 
+                     loadedCount, errorCount);
+        } else {
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),
+                     get_text("CARGADO_EXITOSO"), 
+                     loadedCount);
+        }
+    } else {
+        if (errorCount > 0) {
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),
+                     get_text("ERROR_LINEAS"), errorCount);
+        } else {
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),
+                     get_text("SIN_DATOS"));
+        }
+    }
+    
+    uiState.statusMessageTime = 3.0f;
+    
+    // 7. Opcional: Forzar redibujado de UI
+    #ifdef UI_REFRESH_NEEDED
+    RequestUIRefresh();
+    #endif
 }
-
 void SaveBudgetToTXT(const char* filename) {
     FILE* file = fopen(filename, "w");
     if (!file) {
