@@ -44,7 +44,7 @@ void UpdateBudgetTotals(void);
 void GetCurrentDate(char* buffer, size_t size);
 void AddTransaction(TransactionType type, float amount, const char* description);
 void DeleteTransaction(int index);
-void SaveBudgetToCSV(const char* filename);
+void SaveBudgetToCSV(void);
 void LoadBudgetFromCSV(const char* filename);
 void SaveBudgetToTXT(const char* filename);
 

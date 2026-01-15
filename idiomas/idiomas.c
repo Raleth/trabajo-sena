@@ -37,7 +37,7 @@ const ParClaveValor mensajes_es[] = {
     {"GASTO", "Gasto"},
     {"AÑADIDO_FORMATO", "%s añadido: $%.2f"},
     {"ENTRADA_INVALIDA", "Entrada inválida. Por favor, inténtalo de nuevo."},
-    {"GUARDADO_EN", "Guardado en %s"},
+    {"GUARDADO_EN", "Guardado como %s"},
     {"CARGADO_DESDE", "Cargado desde %s (%d transacciones)"},
     {"REPORTE_GUARDADO_EN", "Reporte guardado en %s"},
     {"TOTAL_INGRESOS", "Total de Ingresos: $"},
@@ -49,6 +49,7 @@ const ParClaveValor mensajes_es[] = {
     {"GASTO_MAYUS", "GASTO"},
     {"ETIQUETA_MONTO", "Monto:"},
     {"ETIQUETA_DESCRIPCION", "Descripción:"},
+    {"NOMBRE_BASE_ARCHIVO", "Presupuesto"},
     {NULL, NULL}
 };
 

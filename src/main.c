@@ -609,7 +609,7 @@ int main(void)
         
         // Save CSV Button
         if (Clay_PointerOver(btn_save_csv_id) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            SaveBudgetToCSV("budget_data.csv");
+            SaveBudgetToCSV();
         }
         
         // Load CSV Button

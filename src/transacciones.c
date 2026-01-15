@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
+#include <string.h>
 #include "estructuras.h"
 
 Budget budget = {0};
@@ -23,7 +25,7 @@ void UpdateBudgetTotals() {
     budget.balance = budget.totalIncome - budget.totalExpense;
 }
 
-// ===== UTILITY FUNCTIONS =====
+// ===== funcion para detectar la fecha actual =====
 void GetCurrentDate(char* buffer, size_t size) {
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
@@ -67,7 +69,7 @@ void DeleteTransaction(int index) {
     snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),get_text("TRANSACCION_BORRADA"));
     uiState.statusMessageTime = 2.0f;
 }
-
+/*
 void SaveBudgetToCSV(const char* filename) {
     FILE* file = fopen(filename, "w");
     if (!file) {
@@ -89,6 +91,76 @@ void SaveBudgetToCSV(const char* filename) {
          get_text("GUARDADO_EN"), filename);  
     uiState.statusMessageTime = 2.0f;
 }
+*/
+
+void SaveBudgetToCSV(void) {
+    // 1. Obtener la frase base para el nombre del archivo
+    const char* basePhrase = get_text("NOMBRE_BASE_ARCHIVO"); 
+    
+    // 2. Obtener la fecha actual formateada
+    char currentDate[11];
+    GetCurrentDate(currentDate, sizeof(currentDate));
+    
+    // 3. Convertir la fecha a formato válido para nombres de archivo
+    char formattedDate[11];
+    strcpy(formattedDate, currentDate);
+    for (int i = 0; formattedDate[i]; i++) {
+        if (formattedDate[i] == '/') formattedDate[i] = '_';
+    }
+    
+    // 4. Crear el nombre base del archivo
+    char baseFilename[256];
+    snprintf(baseFilename, sizeof(baseFilename), "%s_%s.csv", basePhrase, formattedDate);
+    
+    // 5. Verificar si el archivo existe y encontrar un nombre disponible
+    char filename[256];
+    strcpy(filename, baseFilename);
+    
+    int counter = 1;
+    while (access(filename, F_OK) == 0) {
+        // Si el archivo existe, agregar un número al final
+        snprintf(filename, sizeof(filename), "%s_%s_%d.csv", 
+                basePhrase, formattedDate, counter);
+        counter++;
+        
+        // Limitar el número máximo de intentos (por seguridad)
+        if (counter > 1000) {
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+                    "Error: Demasiados archivos existentes");
+            uiState.statusMessageTime = 3.0f;
+            return;
+        }
+    }
+    
+    // 6. Abrir el archivo para escritura
+    FILE* file = fopen(filename, "w");
+    if (!file) {
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+                get_text("GUARDADO_FALLIDO"));
+        uiState.statusMessageTime = 3.0f;
+        return;
+    }
+    
+    // 7. Escribir el encabezado CSV
+    fprintf(file, "Type,Amount,Description,Date\n");
+    
+    // 8. Escribir todas las transacciones
+    for (int i = 0; i < budget.count; i++) {
+        Transaction* t = &budget.transactions[i];
+        fprintf(file, "%s,%.2f,%s,%s\n", 
+                t->type == TRANSACTION_INCOME ? "Income" : "Expense",
+                t->amount, t->description, t->date);
+    }
+    
+    // 9. Cerrar el archivo
+    fclose(file);
+    
+    // 10. Mostrar mensaje de éxito con el nombre del archivo creado
+    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+            get_text("GUARDADO_EN"), filename);  
+    uiState.statusMessageTime = 2.0f;
+}
+
 
 void LoadBudgetFromCSV(const char* filename) {
     FILE* file = fopen(filename, "r");
