@@ -152,7 +152,7 @@ void LoadBudgetFromCSV() {
     ofn.nMaxFile = MAX_PATH;
     ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
     ofn.lpstrDefExt = "csv";
-    ofn.lpstrTitle = "Select Budget CSV File";
+    ofn.lpstrTitle = get_text("SELECCIONAR_ARCHIVO");
     
     // Mostrar diálogo de selección
     if (!GetOpenFileNameA(&ofn)) {
@@ -318,14 +318,57 @@ void LoadBudgetFromCSV() {
     RequestUIRefresh();
     #endif
 }
-void SaveBudgetToTXT(const char* filename) {
-    FILE* file = fopen(filename, "w");
+
+
+void SaveBudgetToTXT() {
+    // 1. Obtener la frase base para el nombre del archivo
+    const char* basePhrase = get_text("NOMBRE_BASE_ARCHIVO"); 
+    
+    // 2. Obtener la fecha actual formateada
+    char currentDate[11];
+    GetCurrentDate(currentDate, sizeof(currentDate));
+    
+    // 3. Convertir la fecha a formato válido para nombres de archivo
+    char formattedDate[11];
+    strcpy(formattedDate, currentDate);
+    for (int i = 0; formattedDate[i]; i++) {
+        if (formattedDate[i] == '/') formattedDate[i] = '_';
+    }
+    
+    // 4. Crear el nombre base del archivo (TXT, no CSV como en tu código)
+    char baseFilename[256];
+    snprintf(baseFilename, sizeof(baseFilename), "%s_%s.txt", basePhrase, formattedDate);
+    
+    // 5. Verificar si el archivo existe y encontrar un nombre disponible
+    char finalFilename[256];  // Cambiado de 'filename' a 'finalFilename'
+    strcpy(finalFilename, baseFilename);
+    
+    int counter = 1;
+    while (access(finalFilename, F_OK) == 0) {
+        // Si el archivo existe, agregar un número al final
+        snprintf(finalFilename, sizeof(finalFilename), "%s_%s_%d.txt", 
+                basePhrase, formattedDate, counter);
+        counter++;
+        
+        // Limitar el número máximo de intentos (por seguridad)
+        if (counter > 1000) {
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+                    "Error: Demasiados archivos existentes");
+            uiState.statusMessageTime = 3.0f;
+            return;
+        }
+    }
+    
+    // 6. Abrir el archivo para escritura (usando finalFilename)
+    FILE* file = fopen(finalFilename, "w");
     if (!file) {
-        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), get_text("GUARDADO_FALLIDO"));
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+                get_text("GUARDADO_FALLIDO"));
         uiState.statusMessageTime = 3.0f;
         return;
     }
     
+    // 7. Escribir el contenido en el archivo (usando 'file', no 'baseFilename')
     fprintf(file, "====================================\n");
     fprintf(file, "      %s\n", get_text("TITULO_REPORTE"));
     fprintf(file, "====================================\n\n");
@@ -337,7 +380,6 @@ void SaveBudgetToTXT(const char* filename) {
     
     for (int i = 0; i < budget.count; i++) {
         Transaction* t = &budget.transactions[i];
-        // Tipo de transacción internacionalizado
         const char* tipoTexto = t->type == TRANSACTION_INCOME ? 
                                get_text("INGRESO_MAYUS") : get_text("GASTO_MAYUS");
         
@@ -348,6 +390,6 @@ void SaveBudgetToTXT(const char* filename) {
     
     fclose(file);
     snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
-         get_text("REPORTE_GUARDADO_EN"), filename); 
+         get_text("REPORTE_GUARDADO_EN"), finalFilename); 
     uiState.statusMessageTime = 2.0f;
 }

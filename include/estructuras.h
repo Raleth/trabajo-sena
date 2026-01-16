@@ -46,7 +46,7 @@ void AddTransaction(TransactionType type, float amount, const char* description)
 void DeleteTransaction(int index);
 void SaveBudgetToCSV(void);
 void LoadBudgetFromCSV(void);
-void SaveBudgetToTXT(const char* filename);
+void SaveBudgetToTXT(void);
 
 //CONSTANTES
 extern const int altura;

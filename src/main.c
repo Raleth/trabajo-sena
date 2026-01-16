@@ -619,7 +619,7 @@ int main(void)
         
         // Export TXT Button
         if (Clay_PointerOver(btn_export_txt_id) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            SaveBudgetToTXT("budget_report.txt");
+            SaveBudgetToTXT();
         }
         
         // Handle delete button clicks for each transaction
