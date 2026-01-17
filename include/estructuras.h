@@ -1,7 +1,7 @@
 #ifndef datos
 #define datos
 
-// ===== DATA STRUCTURES =====
+// ===== ESTRUCTURAS DE DATOS=====
 typedef enum {
     TRANSACTION_INCOME,
     TRANSACTION_EXPENSE
@@ -57,7 +57,7 @@ extern int idioma_global; // extern para acceder a la variable global del idioma
 
 const char* get_text(const char *clave); // Prototipo de la función para obtener texto traducido
 
-//texto adicionales
+//textos adicionales
 #define MSG_FALLO_AL_ABRIR "No se pudo abrir el archivo"
 #define MSG_ERROR_SELECCION "Error al seleccionar archivo"
 #define MSG_CANCELADO "Operación cancelada"

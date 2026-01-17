@@ -50,7 +50,15 @@ const ParClaveValor mensajes_es[] = {
     {"ETIQUETA_MONTO", "Monto:"},
     {"ETIQUETA_DESCRIPCION", "Descripción:"},
     {"NOMBRE_BASE_ARCHIVO", "Presupuesto"},
-    { "SELECCIONAR_ARCHIVO", "Seleccionar archivo CSV de presupuesto" },
+    {"SELECCIONAR_ARCHIVO", "Seleccionar archivo CSV de presupuesto" },
+    {"ERROR_SELECCION", "Error al seleccionar el archivo."},
+    {"CANCELADO", "Operación cancelada por el usuario."},
+    {"ARCHIVO_VACIO", "El archivo está vacío o no contiene datos válidos."},
+    {"FORMATO_INVALIDO", "Formato de archivo inválido."},
+    {"CARGADO_CON_ERRORES", "Cargado %d transacciones (%d errores)."},
+    {"CARGADO_EXITOSO", "Cargado exitosamente %d transacciones."},
+    {"ERROR_LINEAS", "Error en %d líneas del archivo."},
+    {"SIN_DATOS", "No se encontraron datos válidos en el archivo."},
     {NULL, NULL}
 };
 
@@ -92,6 +100,14 @@ const ParClaveValor mensajes_en[] = {
     {"ETIQUETA_DESCRIPCION", "Description:"},
     {"NOMBRE_BASE_ARCHIVO", "Budget"},
     {"SELECCIONAR_ARCHIVO", "Select budget CSV file"},
+    {"ERROR_SELECCION", "Error selecting file."},
+    {"CANCELADO", "Operation cancelled by user."},
+    {"ARCHIVO_VACIO", "The file is empty or contains no valid data."},
+    {"FORMATO_INVALIDO", "Invalid file format."},
+    {"CARGADO_CON_ERRORES", "Loaded %d transactions (%d errors)."},
+    {"CARGADO_EXITOSO", "Successfully loaded %d transactions."},
+    {"ERROR_LINEAS", "Error in %d lines of the file."},
+    {"SIN_DATOS", "No valid data found in the file."},
     {NULL, NULL}
 };
 
@@ -133,6 +149,14 @@ const ParClaveValor mensajes_de[] = {
     {"ETIQUETA_DESCRIPCION", "Beschreibung:"},
     {"NOMBRE_BASE_ARCHIVO", "Budget"},
     {"SELECCIONAR_ARCHIVO", "Budget-CSV-Datei auswählen"},
+    {"ERROR_SELECCION", "Fehler bei der Dateiauswahl."},
+    {"CANCELADO", "Vorgang vom Benutzer abgebrochen."},
+    {"ARCHIVO_VACIO", "Die Datei ist leer oder enthält keine gültigen Daten."},
+    {"FORMATO_INVALIDO", "Ungültiges Dateiformat."},
+    {"CARGADO_CON_ERRORES", "%d Transaktionen geladen (%d Fehler)."},
+    {"CARGADO_EXITOSO", "Erfolgreich %d Transaktionen geladen."},
+    {"ERROR_LINEAS", "Fehler in %d Zeilen der Datei."},
+    {"SIN_DATOS", "Keine gültigen Daten in der Datei gefunden."},
     {NULL, NULL}
 };
 
@@ -174,6 +198,14 @@ const ParClaveValor mensajes_fr[] = {
     {"ETIQUETA_DESCRIPCION", "Description :"},
     {"NOMBRE_BASE_ARCHIVO", "Budget"},
     {"SELECCIONAR_ARCHIVO", "Sélectionner un fichier CSV de budget"},
+    {"ERROR_SELECCION", "Erreur lors de la sélection du fichier."},
+    {"CANCELADO", "Opération annulée par l'utilisateur."},
+    {"ARCHIVO_VACIO", "Le fichier est vide ou ne contient pas de données valides."},
+    {"FORMATO_INVALIDO", "Format de fichier invalide."},
+    {"CARGADO_CON_ERRORES", "%d transactions chargées (%d erreurs)."},
+    {"CARGADO_EXITOSO", "Succès du chargement de %d transactions."},
+    {"ERROR_LINEAS", "Erreur dans %d lignes du fichier."},
+    {"SIN_DATOS", "Aucune donnée valide trouvée dans le fichier."},
     {NULL, NULL}
 };
 
