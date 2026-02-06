@@ -72,8 +72,9 @@ run: $(EXECUTABLE)
 
 # Regla para limpiar archivos generados
 clean:
-	@rm -rf $(BUILD_DIR)
-	@rm -rf $(BIN_DIR)
+	@rm -rf $(BUILD_DIR)/* $(BUILD_DIR)/.[!.]* $(BUILD_DIR)/..?* 2>/dev/null || true
+	@rm -rf $(BIN_DIR)/* $(BIN_DIR)/.[!.]* $(BIN_DIR)/..?* 2>/dev/null || true
+	@mkdir -p $(BUILD_DIR) $(BIN_DIR)
 
 # Regla para limpiar y recompilar desde cero
 rebuild: clean all
