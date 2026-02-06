@@ -12,7 +12,7 @@ EXECUTABLE = $(BIN_DIR)/BudgetManager.exe
 
 # Archivos fuente
 SRC_FILES = $(SRC_DIR)/main.c $(IDIOMAS_DIR)/idiomas.c \
-			$(SRC_DIR)/transacciones.c
+			$(SRC_DIR)/transacciones.c $(SRC_DIR)/pantallas.c
 # Archivos objeto (cambia .c por .o y cambia directorio)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(filter $(SRC_DIR)/%, $(SRC_FILES))) \
             $(patsubst $(IDIOMAS_DIR)/%.c, $(BUILD_DIR)/%.o, $(filter $(IDIOMAS_DIR)/%, $(SRC_FILES)))
@@ -50,6 +50,11 @@ $(BUILD_DIR)/idiomas.o: $(IDIOMAS_DIR)/idiomas.c | $(BUILD_DIR)
 
 # Regla para compilar transacciones.c -> build/transacciones.o
 $(BUILD_DIR)/transacciones.o: $(SRC_DIR)/transacciones.c | $(BUILD_DIR)
+	@echo Compiling $<...
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Regla para compilar pantallas.c -> build/pantallas.o
+$(BUILD_DIR)/pantallas.o: $(SRC_DIR)/pantallas.c | $(BUILD_DIR)
 	@echo Compiling $<...
 	$(CC) $(CFLAGS) -c $< -o $@
 

@@ -1,5 +1,6 @@
 #ifndef datos
 #define datos
+#include <clay.h>
 
 // ===== ESTRUCTURAS DE DATOS=====
 typedef enum {
@@ -54,6 +55,8 @@ extern const int ancho;
 
 //Definiciones de Idiomas.c
 extern int idioma_global; // extern para acceder a la variable global del idioma
+
+Clay_String Clay_MakeString(const char* str);//prototipo de la función para crear strings en clay de forma pseudocorta
 
 const char* get_text(const char *clave); // Prototipo de la función para obtener texto traducido
 
