@@ -34,6 +34,7 @@ typedef struct {
     char incomeText[64];
     char expenseText[64];
     char balanceText[64];
+    bool showConfig;
 } UIState;
 
 // ===== ESTADO GLOBAL =====

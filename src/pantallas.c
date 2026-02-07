@@ -48,6 +48,11 @@ void UI_AssignElementIds(UIIds *ids) {
     ids->btnSaveCsv = CLAY_ID("btn_save_csv");
     ids->btnLoadCsv = CLAY_ID("btn_load_csv");
     ids->btnExportTxt = CLAY_ID("btn_export_txt");
+    ids->btnConfig = CLAY_ID("btn_config");
+}
+
+static Clay_ElementId LangButtonId(int index) {
+    return Clay__HashNumber((uint32_t)(9000 + index), 0);
 }
 
 static void RenderSidebar(const UITheme *t, const UIIds *ids, int fontId,
@@ -199,6 +204,20 @@ static void RenderSidebar(const UITheme *t, const UIIds *ids, int fontId,
             }
         }) {
             CLAY_TEXT(Clay_MakeString(get_text("EXPORTAR_REPORTE")), CLAY_TEXT_CONFIG({
+                .fontId = 0, .fontSize = 16, .textColor = {255, 255, 255, 255}
+            }));
+        }
+
+        CLAY(ids->btnConfig, {
+            .backgroundColor = Clay_Hovered() ? t->botonSecondaryHover : t->botonSecondary,
+            .cornerRadius = 6,
+            .layout = {
+                .sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIXED(40)},
+                .padding = {10, 10, 10, 10},
+                .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}
+            }
+        }) {
+            CLAY_TEXT(Clay_MakeString(get_text("CONFIGURACIONES")), CLAY_TEXT_CONFIG({
                 .fontId = 0, .fontSize = 16, .textColor = {255, 255, 255, 255}
             }));
         }
@@ -394,7 +413,7 @@ static void RenderWorkspace(const UITheme *t, int fontId) {
             .sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_GROW()},
             .padding = {15, 15, 15, 15},
             .childGap = 15,
-            .layoutDirection = CLAY_TOP_TO_BOTTOM
+        .layoutDirection = CLAY_TOP_TO_BOTTOM
         }
     })
     {
@@ -413,9 +432,55 @@ static void RenderWorkspace(const UITheme *t, int fontId) {
                 }));
             }
         }
+        if (uiState.showConfig) {
+            CLAY(CLAY_ID("config_panel"), {
+                .backgroundColor = t->fondo,
+                .cornerRadius = 8,
+                .layout = {
+                    .sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_GROW()},
+                    .padding = {15, 15, 15, 15},
+                    .childGap = 15,
+                    .layoutDirection = CLAY_TOP_TO_BOTTOM
+                }
+            }) {
+                CLAY(CLAY_ID("config_title"), {
+                    .layout = {.sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIXED(30)}}
+                }) {
+                    CLAY_TEXT(Clay_MakeString(get_text("SELECCIONAR_IDIOMA")), CLAY_TEXT_CONFIG({
+                        .fontId = fontId, .fontSize = 20, .textColor = t->texto
+                    }));
+                }
 
-        RenderSummaryCards(fontId, t);
-        RenderTransactions(fontId, t);
+                const char* langKeys[] = {
+                    "IDIOMA_ES",
+                    "IDIOMA_EN",
+                    "IDIOMA_DE",
+                    "IDIOMA_FR"
+                };
+                for (int i = 0; i < 4; i++) {
+                    bool selected = (idioma_global == (i + 1));
+                    Clay_Color baseColor = selected ? t->botonPrimary : t->botonSecondary;
+                    Clay_Color hoverColor = selected ? t->botonPrimaryHover : t->botonSecondaryHover;
+
+                    CLAY(LangButtonId(i), {
+                        .backgroundColor = Clay_Hovered() ? hoverColor : baseColor,
+                        .cornerRadius = 6,
+                        .layout = {
+                            .sizing = {.width = CLAY_SIZING_FIXED(240), .height = CLAY_SIZING_FIXED(40)},
+                            .padding = {10, 10, 10, 10},
+                            .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}
+                        }
+                    }) {
+                        CLAY_TEXT(Clay_MakeString(get_text(langKeys[i])), CLAY_TEXT_CONFIG({
+                            .fontId = 0, .fontSize = 16, .textColor = {255, 255, 255, 255}
+                        }));
+                    }
+                }
+            }
+        } else {
+            RenderSummaryCards(fontId, t);
+            RenderTransactions(fontId, t);
+        }
     }
 }
 
@@ -503,6 +568,10 @@ void UI_HandleTextInput(void) {
 }
 
 void UI_HandleButtons(const UIIds *ids) {
+    if (Clay_PointerOver(ids->btnConfig) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        uiState.showConfig = !uiState.showConfig;
+    }
+
     if (Clay_PointerOver(ids->btnIncome) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         float amount = (float)atof(uiState.amountInput);
         if (amount > 0 && strlen(uiState.descriptionInput) > 0) {
@@ -539,6 +608,16 @@ void UI_HandleButtons(const UIIds *ids) {
 
     if (Clay_PointerOver(ids->btnExportTxt) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         SaveBudgetToTXT();
+    }
+
+    if (uiState.showConfig) {
+        for (int i = 0; i < 4; i++) {
+            Clay_ElementId langBtn = LangButtonId(i);
+            if (Clay_PointerOver(langBtn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                idioma_global = i + 1;
+                break;
+            }
+        }
     }
 
     for (int i = budget.count - 1; i >= 0 && i >= budget.count - 20; i--) {
