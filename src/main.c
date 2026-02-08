@@ -17,6 +17,7 @@ void HandleClayErrors(Clay_ErrorData errorData)
     printf("%s", errorData.errorText.chars);
 }
 
+
 int main(void)
 {
     Clay_Raylib_Initialize(ancho, altura,get_text("TITULO_VENTANA"), 
@@ -38,6 +39,8 @@ int main(void)
     Clay_Initialize(claymemory, (Clay_Dimensions){.width = ancho, .height = altura},
                     (Clay_ErrorHandler){HandleClayErrors, .userData = NULL});
 
+    Clay_SetDebugModeEnabled(true);
+    
     const int TU_FONT_ID = 0;
     UITheme theme = UI_DefaultTheme();
 
