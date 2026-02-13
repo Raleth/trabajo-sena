@@ -39,7 +39,7 @@ int main(void)
     Clay_Initialize(claymemory, (Clay_Dimensions){.width = ancho, .height = altura},
                     (Clay_ErrorHandler){HandleClayErrors, .userData = NULL});
 
-    Clay_SetDebugModeEnabled(true);
+    Clay_SetDebugModeEnabled(false);
     
     const int TU_FONT_ID = 0;
     UITheme theme = UI_DefaultTheme();

@@ -28,6 +28,7 @@ typedef struct {
     Clay_ElementId btnLoadCsv;
     Clay_ElementId btnExportTxt;
     Clay_ElementId btnConfig;
+    Clay_ElementId btnEstadisticas;
 } UIIds;
 
 UITheme UI_DefaultTheme(void);
