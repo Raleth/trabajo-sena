@@ -49,6 +49,7 @@ void DeleteTransaction(int index);
 void SaveBudgetToCSV(void);
 void LoadBudgetFromCSV(void);
 void SaveBudgetToTXT(void);
+void Prinftestadisticas(void);
 
 //CONSTANTES
 extern const int altura;

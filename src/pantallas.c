@@ -545,6 +545,12 @@ void UI_HandleButtons(const UIIds *ids)
         }
     }
 
+    if (Clay_PointerOver(ids->btnEstadisticas) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        Prinftestadisticas();
+    }
+    
+
     if (Clay_PointerOver(ids->btnSaveCsv) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
         SaveBudgetToCSV();
