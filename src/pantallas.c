@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include "graficas.h"
 
 // Forward declaration for internal Clay helper (not exposed in headers)
 extern Clay_ElementId Clay__HashNumber(uint32_t offset, uint32_t seed);
@@ -168,6 +169,17 @@ static void RenderSidebar(const UITheme *t, const UIIds *ids, int fontId,
             CLAY_TEXT(Clay_MakeString(get_text("EXPORTAR_REPORTE")), CLAY_TEXT_CONFIG({.fontId = 0, .fontSize = 16, .textColor = {255, 255, 255, 255}}));
         }
 
+        CLAY(ids->btnEstadisticas, {.backgroundColor = Clay_Hovered() ? t->botonSecondaryHover : t->botonSecondary,
+                                    .cornerRadius = 6,
+                                    .layout = {
+                                        .sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIXED(40)},
+                                        .padding = {10, 10, 10, 10},
+                                        .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}}})
+        {
+            CLAY_TEXT(Clay_MakeString(get_text("ESTADISTICAS")),
+                      CLAY_TEXT_CONFIG({.fontId = 0, .fontSize = 16, .textColor = {255, 255, 255, 255}}));
+        }
+
         CLAY(ids->btnConfig, {.backgroundColor = Clay_Hovered() ? t->botonSecondaryHover : t->botonSecondary,
                               .cornerRadius = 6,
                               .layout = {
@@ -234,6 +246,7 @@ static void RenderSummaryCards(int fontId, const UITheme *t)
 
 static void RenderTransactions(int fontId, const UITheme *t, const UIIds *ids)
 {
+    (void)ids; // parámetro reservado para uso futuro
     CLAY(CLAY_ID("transactions_title"), {.layout = {.sizing = {.width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIXED(35)},
                                                     .layoutDirection = CLAY_LEFT_TO_RIGHT,
                                                     .childAlignment = {.x = CLAY_ALIGN_X_RIGHT, .y = CLAY_ALIGN_Y_CENTER}}})
@@ -241,25 +254,6 @@ static void RenderTransactions(int fontId, const UITheme *t, const UIIds *ids)
         char titleText[128];
         snprintf(titleText, sizeof(titleText), "Transactions (%d)", budget.count);
         CLAY_TEXT(Clay_MakeString(titleText), CLAY_TEXT_CONFIG({.fontId = fontId, .fontSize = 22, .textColor = t->texto}));
-
-        CLAY(ids->btnEstadisticas, {.backgroundColor = Clay_Hovered() ? t->botonSecondaryHover : t->botonSecondary,
-                                    .cornerRadius = 6,
-                                    .layout = {
-                                        .sizing = {
-                                            .width = CLAY_SIZING_FIXED(120),
-                                            .height = CLAY_SIZING_FIXED(35)},
-                                        .padding = {10, 10, 10, 10},
-                                        .layoutDirection = CLAY_TOP_TO_BOTTOM,
-                                        .childAlignment = {.x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER}}})
-        {
-            CLAY_TEXT(
-                Clay_MakeString("estadisticas"),
-                CLAY_TEXT_CONFIG({
-                    .fontId = 0,
-                    .fontSize = 14,
-                    .textColor = {255, 255, 255, 255},
-                }));
-        }
     }
 
     CLAY(CLAY_ID("transactions_container"), {.backgroundColor = t->fondo,
@@ -283,7 +277,11 @@ static void RenderTransactions(int fontId, const UITheme *t, const UIIds *ids)
         }
         else
         {
-            for (int i = budget.count - 1; i >= 0 && i >= budget.count - 20; i--)
+            // Buffers estáticos: Clay guarda punteros, no copias.
+            // Variables locales del stack se corrompen al renderizar.
+            static char amountBuffers[20][32];
+            int bufIdx = 0;
+            for (int i = budget.count - 1; i >= 0 && i >= budget.count - 20; i--, bufIdx++)
             {
                 Transaction *tnx = &budget.transactions[i];
                 uint32_t itemHashId = (uint32_t)(123456 + i);
@@ -307,13 +305,12 @@ static void RenderTransactions(int fontId, const UITheme *t, const UIIds *ids)
                         CLAY_TEXT(Clay_MakeString(tnx->date), CLAY_TEXT_CONFIG({.fontId = fontId, .fontSize = 12, .textColor = {180, 180, 180, 255}}));
                     }
 
-                    char amountStr[32];
-                    snprintf(amountStr, sizeof(amountStr), "$%.2f", tnx->amount);
+                    snprintf(amountBuffers[bufIdx], sizeof(amountBuffers[bufIdx]), "$%.2f", tnx->amount);
                     CLAY(Clay__HashNumber(itemHashId + 2000, 0), {.layout = {
                                                                       .sizing = {.width = CLAY_SIZING_FIXED(100), .height = CLAY_SIZING_GROW()},
                                                                       .childAlignment = {.x = CLAY_ALIGN_X_RIGHT, .y = CLAY_ALIGN_Y_CENTER}}})
                     {
-                        CLAY_TEXT(Clay_MakeString(amountStr), CLAY_TEXT_CONFIG({.fontId = fontId, .fontSize = 20, .textColor = t->texto}));
+                        CLAY_TEXT(Clay_MakeString(amountBuffers[bufIdx]), CLAY_TEXT_CONFIG({.fontId = fontId, .fontSize = 20, .textColor = t->texto}));
                     }
 
                     Clay_ElementId btnDeleteId = Clay__HashNumber(itemHashId + 3000, 0);
@@ -403,6 +400,7 @@ static void RenderWorkspace(const UITheme *t, int fontId, const UIIds *ids)
 }
 
 Clay_RenderCommandArray UI_BuildLayout(const UITheme *t, const UIIds *ids, int fontId)
+
 {
     static char amountDisplayText[64];
     static char descDisplayText[140];
@@ -416,13 +414,21 @@ Clay_RenderCommandArray UI_BuildLayout(const UITheme *t, const UIIds *ids, int f
                                            .padding = {15, 15, 15, 15},
                                            .childGap = 15}})
     {
+        // ¡IMPORTANTE! Llamar a RenderSidebar aquí
         RenderSidebar(t, ids, fontId, amountDisplayText, descDisplayText);
-        RenderWorkspace(t, fontId, ids);
+
+        if (uiState.showStats)
+        {
+            RenderStatsView(t, fontId, ids);
+        }
+        else
+        {
+            RenderWorkspace(t, fontId, ids);
+        }
     }
 
     return Clay_EndLayout();
 }
-
 void UI_HandlePointerFocus(const UIIds *ids)
 {
     if (Clay_PointerOver(ids->amountInput) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
@@ -506,11 +512,48 @@ void UI_HandleTextInput(void)
 
 void UI_HandleButtons(const UIIds *ids)
 {
+    // Botón de configuración (siempre visible)
     if (Clay_PointerOver(ids->btnConfig) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
         uiState.showConfig = !uiState.showConfig;
+        if (uiState.showConfig)
+        {
+            uiState.showStats = false; // al abrir configuración, cerrar estadísticas
+        }
     }
 
+    // Botón de estadísticas (siempre visible)
+    if (Clay_PointerOver(ids->btnEstadisticas) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        uiState.showStats = !uiState.showStats;
+        if (uiState.showStats)
+        {
+            uiState.showConfig = false; // al abrir estadísticas, cerrar configuración
+        }
+    }
+
+    // Si estamos en vista de estadísticas, no procesamos más botones
+    if (uiState.showStats)
+    {
+        return;
+    }
+
+    // Si estamos en configuración, solo procesamos los botones de idioma
+    if (uiState.showConfig)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Clay_ElementId langBtn = LangButtonId(i);
+            if (Clay_PointerOver(langBtn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+            {
+                idioma_global = i + 1;
+                break;
+            }
+        }
+        return; // salir, no procesar otros botones
+    }
+
+    // --- Vista normal: procesar botones de transacciones y archivos ---
     if (Clay_PointerOver(ids->btnIncome) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
         float amount = (float)atof(uiState.amountInput);
@@ -545,12 +588,6 @@ void UI_HandleButtons(const UIIds *ids)
         }
     }
 
-    if (Clay_PointerOver(ids->btnEstadisticas) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-    {
-        Prinftestadisticas();
-    }
-    
-
     if (Clay_PointerOver(ids->btnSaveCsv) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
         SaveBudgetToCSV();
@@ -566,19 +603,7 @@ void UI_HandleButtons(const UIIds *ids)
         SaveBudgetToTXT();
     }
 
-    if (uiState.showConfig)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            Clay_ElementId langBtn = LangButtonId(i);
-            if (Clay_PointerOver(langBtn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-            {
-                idioma_global = i + 1;
-                break;
-            }
-        }
-    }
-
+    // Botones de eliminar transacciones (solo en vista normal)
     for (int i = budget.count - 1; i >= 0 && i >= budget.count - 20; i--)
     {
         uint32_t itemHashId = (uint32_t)(123456 + i);

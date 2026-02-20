@@ -72,70 +72,73 @@ void DeleteTransaction(int index) {
 }
 
 void SaveBudgetToCSV(void) {
-    // 1. Obtener la frase base para el nombre del archivo
-    const char* basePhrase = get_text("NOMBRE_BASE_ARCHIVO"); 
-    
-    // 2. Obtener la fecha actual formateada
+    // 1. Construir el nombre sugerido: "Presupuesto_DD_MM_YYYY.csv"
+    const char* basePhrase = get_text("NOMBRE_BASE_ARCHIVO");
+
     char currentDate[11];
     GetCurrentDate(currentDate, sizeof(currentDate));
-    
-    // 3. Convertir la fecha a formato válido para nombres de archivo
+
     char formattedDate[11];
     strcpy(formattedDate, currentDate);
     for (int i = 0; formattedDate[i]; i++) {
         if (formattedDate[i] == '/') formattedDate[i] = '_';
     }
-    
-    // 4. Crear el nombre base del archivo
-    char baseFilename[256];
-    snprintf(baseFilename, sizeof(baseFilename), "%s_%s.csv", basePhrase, formattedDate);
-    
-    // 5. Verificar si el archivo existe y encontrar un nombre disponible
-    char filename[256];
-    strcpy(filename, baseFilename);
-    
-    int counter = 1;
-    while (access(filename, F_OK) == 0) {
-        // Si el archivo existe, agregar un número al final
-        snprintf(filename, sizeof(filename), "%s_%s_%d.csv", 
-                basePhrase, formattedDate, counter);
-        counter++;
-        
-        // Limitar el número máximo de intentos (por seguridad)
-        if (counter > 1000) {
-            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
-                    "Error: Demasiados archivos existentes");
-            uiState.statusMessageTime = 3.0f;
-            return;
+
+    // 2. Rellenar el buffer del diálogo con el nombre sugerido
+    //    GetSaveFileNameA usa este buffer tanto de entrada (nombre inicial)
+    //    como de salida (ruta final elegida por el usuario).
+    char filename[MAX_PATH] = "";
+    snprintf(filename, sizeof(filename), "%s_%s.csv", basePhrase, formattedDate);
+
+    // 3. Configurar el diálogo de guardar
+    OPENFILENAMEA ofn;
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize  = sizeof(ofn);
+    ofn.hwndOwner    = NULL;
+    ofn.lpstrFilter  = "CSV Files (*.csv)\0*.csv\0All Files (*.*)\0*.*\0";
+    ofn.lpstrFile    = filename;
+    ofn.nMaxFile     = MAX_PATH;
+    ofn.Flags        = OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY;
+    ofn.lpstrDefExt  = "csv";
+    ofn.lpstrTitle   = get_text("GUARDAR_CSV");
+
+    // 4. Mostrar el diálogo
+    if (!GetSaveFileNameA(&ofn)) {
+        // Usuario canceló o hubo error
+        if (CommDlgExtendedError()) {
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),
+                     get_text("ERROR_SELECCION"));
+        } else {
+            snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),
+                     get_text("CANCELADO"));
         }
+        uiState.statusMessageTime = 2.0f;
+        return;
     }
-    
-    // 6. Abrir el archivo para escritura
+
+    // 5. Abrir el archivo en la ruta elegida
     FILE* file = fopen(filename, "w");
     if (!file) {
-        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
+        snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),
                 get_text("GUARDADO_FALLIDO"));
         uiState.statusMessageTime = 3.0f;
         return;
     }
-    
-    // 7. Escribir el encabezado CSV
+
+    // 6. Escribir encabezado y transacciones
     fprintf(file, "Type,Amount,Description,Date\n");
-    
-    // 8. Escribir todas las transacciones
     for (int i = 0; i < budget.count; i++) {
         Transaction* t = &budget.transactions[i];
-        fprintf(file, "%s,%.2f,%s,%s\n", 
+        fprintf(file, "%s,%.2f,%s,%s\n",
                 t->type == TRANSACTION_INCOME ? "Income" : "Expense",
                 t->amount, t->description, t->date);
     }
-    
-    // 9. Cerrar el archivo
+
     fclose(file);
-    
-    // 10. Mostrar mensaje de éxito con el nombre del archivo creado
-    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage), 
-            get_text("GUARDADO_EN"), filename);  
+
+    // 7. Mensaje de éxito
+    snprintf(uiState.statusMessage, sizeof(uiState.statusMessage),
+            get_text("GUARDADO_EN"), filename);
     uiState.statusMessageTime = 2.0f;
 }
 

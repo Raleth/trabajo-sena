@@ -4,18 +4,19 @@
 // 2. Inglés
 // 3. Frances
 // y puedes agregar más idiomas aquí
-int idioma_global = 1; 
+int idioma_global = 1;
 
 #define MAX_CLAVES 100
 
-typedef struct {
+typedef struct
+{
     const char *clave;
     const char *texto;
 } ParClaveValor;
 
 const ParClaveValor mensajes_es[] = {
     {"TITULO_VENTANA", "Bienvenido a tu gestor de presupuestos."},
-    {"CANTIDAD","Cantidad: "},
+    {"CANTIDAD", "Cantidad: "},
     {"MENSAJE_MAXIMA_CANTIDAD_TRANSACCIONES", "error: ¡Cantidad máxima de transacciones alcanzada!"},
     {"TRANSACCION_BORRADA", "Transacción eliminada"},
     {"GUARDADO_FALLIDO", "Error al guardar el archivo."},
@@ -25,9 +26,9 @@ const ParClaveValor mensajes_es[] = {
     {"AÑADIR_INGRESO", "Añadir Ingreso"},
     {"AÑADIR_GASTO", "Añadir Gasto"},
     {"OPERACIONES_DE_ARCHIVO", "Operaciones de archivo"},
-    {"GUARDAR_CSV"," Guardar como CSV"},
-    {"CARGAR_CSV"," Cargar CSV"},
-    {"EXPORTAR_REPORTE"," Exportar Reporte en TXT"},
+    {"GUARDAR_CSV", " Guardar como CSV"},
+    {"CARGAR_CSV", " Cargar CSV"},
+    {"EXPORTAR_REPORTE", " Exportar Reporte en TXT"},
     {"CONFIGURACIONES", "Configuraciones"},
     {"SELECCIONAR_IDIOMA", "Seleccionar idioma"},
     {"IDIOMA_ES", "Español"},
@@ -37,7 +38,7 @@ const ParClaveValor mensajes_es[] = {
     {"TOTAL_INGRESOS", "Total de Ingresos: "},
     {"TOTAL_GASTOS", "Total de Gastos: "},
     {"BALANCE_NETO", "Balance Neto: "},
-    {"NOTIFICACION","Aún no hay transacciones. ¡Agrega la primera!"},
+    {"NOTIFICACION", "Aún no hay transacciones. ¡Agrega la primera!"},
     {"ERROR_VALIDACION", "Por favor, introduce una cantidad y descripción válidas"},
     {"INGRESO", "Ingreso"},
     {"GASTO", "Gasto"},
@@ -56,7 +57,7 @@ const ParClaveValor mensajes_es[] = {
     {"ETIQUETA_MONTO", "Monto:"},
     {"ETIQUETA_DESCRIPCION", "Descripción:"},
     {"NOMBRE_BASE_ARCHIVO", "Presupuesto"},
-    {"SELECCIONAR_ARCHIVO", "Seleccionar archivo CSV de presupuesto" },
+    {"SELECCIONAR_ARCHIVO", "Seleccionar archivo CSV de presupuesto"},
     {"ERROR_SELECCION", "Error al seleccionar el archivo."},
     {"CANCELADO", "Operación cancelada por el usuario."},
     {"ARCHIVO_VACIO", "El archivo está vacío o no contiene datos válidos."},
@@ -65,8 +66,12 @@ const ParClaveValor mensajes_es[] = {
     {"CARGADO_EXITOSO", "Cargado exitosamente %d transacciones."},
     {"ERROR_LINEAS", "Error en %d líneas del archivo."},
     {"SIN_DATOS", "No se encontraron datos válidos en el archivo."},
-    {NULL, NULL}
-};
+    {"INGRESOS", "Ingresos"},
+    {"GASTOS", "Gastos"},
+    {"TITULO_ESTADISTICAS", "Estadisticas de Balance"},
+    {"NO_HAY_DATOS", "No hay datos para mostrar"},
+    {"ESTADISTICAS", "Estadisticas"},
+    {NULL, NULL}};
 
 const ParClaveValor mensajes_en[] = {
     {"TITULO_VENTANA", "Welcome to your budget manager."},
@@ -120,8 +125,12 @@ const ParClaveValor mensajes_en[] = {
     {"CARGADO_EXITOSO", "Successfully loaded %d transactions."},
     {"ERROR_LINEAS", "Error in %d lines of the file."},
     {"SIN_DATOS", "No valid data found in the file."},
-    {NULL, NULL}
-};
+    {"INGRESOS", "Income"},
+    {"GASTOS", "Expenses"},
+    {"TITULO_ESTADISTICAS", "Balance Statistics"},
+    {"NO_HAY_DATOS", "No data to display"},
+    {"ESTADISTICAS", "Statistics"},
+    {NULL, NULL}};
 
 const ParClaveValor mensajes_de[] = {
     {"TITULO_VENTANA", "Willkommen zu Ihrem Budgetmanager."},
@@ -175,8 +184,12 @@ const ParClaveValor mensajes_de[] = {
     {"CARGADO_EXITOSO", "Erfolgreich %d Transaktionen geladen."},
     {"ERROR_LINEAS", "Fehler in %d Zeilen der Datei."},
     {"SIN_DATOS", "Keine gültigen Daten in der Datei gefunden."},
-    {NULL, NULL}
-};
+    {"INGRESOS", "Einnahmen"},
+    {"GASTOS", "Ausgaben"},
+    {"TITULO_ESTADISTICAS", "Bilanzstatistiken"},
+    {"NO_HAY_DATOS", "Keine Daten zum Anzeigen"},
+    {"ESTADISTICAS", "Statistiken"},
+    {NULL, NULL}};
 
 const ParClaveValor mensajes_fr[] = {
     {"TITULO_VENTANA", "Bienvenue dans votre gestionnaire de budget."},
@@ -198,7 +211,7 @@ const ParClaveValor mensajes_fr[] = {
     {"IDIOMA_ES", "Espagnol"},
     {"IDIOMA_EN", "Anglais"},
     {"IDIOMA_DE", "Allemand"},
-    {"IDIOMA_FR", "Français"},
+    {"IDIOMA_FR", "Francais"},
     {"TOTAL_INGRESOS", "Total des revenus : "},
     {"TOTAL_GASTOS", "Total des dépenses : "},
     {"BALANCE_NETO", "Solde net : "},
@@ -230,28 +243,35 @@ const ParClaveValor mensajes_fr[] = {
     {"CARGADO_EXITOSO", "Succès du chargement de %d transactions."},
     {"ERROR_LINEAS", "Erreur dans %d lignes du fichier."},
     {"SIN_DATOS", "Aucune donnée valide trouvée dans le fichier."},
-    {NULL, NULL}
-};
+    {"INGRESOS", "Revenus"},
+    {"GASTOS", "Dépenses"},
+    {"TITULO_ESTADISTICAS", "Statistiques de solde"},
+    {"NO_HAY_DATOS", "Aucune donnée à afficher"},
+    {"ESTADISTICAS", "Statistiques"},
+    {NULL, NULL}};
 
-const ParClaveValor* obtener_catalogo() {
+const ParClaveValor *obtener_catalogo()
+{
 
-    switch (idioma_global) {
-        case 1:
-            return mensajes_es;
-        case 2:
-            return mensajes_en;
-        case 3:
-            return mensajes_de;
-        case 4:
-            return mensajes_fr;
-        default:
-            return mensajes_es; 
+    switch (idioma_global)
+    {
+    case 1:
+        return mensajes_es;
+    case 2:
+        return mensajes_en;
+    case 3:
+        return mensajes_de;
+    case 4:
+        return mensajes_fr;
+    default:
+        return mensajes_es;
     }
-
 }
 
-const char* get_text(const char *clave) {
-    if (clave == NULL) {
+const char *get_text(const char *clave)
+{
+    if (clave == NULL)
+    {
         return "[ERROR: CLAVE NULA]"; // Caso extremo
     }
 
@@ -259,8 +279,10 @@ const char* get_text(const char *clave) {
     const ParClaveValor *catalogo = obtener_catalogo();
 
     // Recorrer el catálogo hasta encontrar la clave
-    for (int i = 0; catalogo[i].clave != NULL; i++) {
-        if (strcmp(catalogo[i].clave, clave) == 0) {
+    for (int i = 0; catalogo[i].clave != NULL; i++)
+    {
+        if (strcmp(catalogo[i].clave, clave) == 0)
+        {
             return catalogo[i].texto; // ¡Clave encontrada!
         }
     }
@@ -268,5 +290,3 @@ const char* get_text(const char *clave) {
     // Si no se encuentra la clave
     return "[TEXTO NO ENCONTRADO]";
 }
-
-    

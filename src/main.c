@@ -54,6 +54,7 @@ int main(void)
     
     while (!WindowShouldClose())
     {
+
         deltaTime = GetFrameTime();
 
         if (uiState.statusMessageTime > 0) {

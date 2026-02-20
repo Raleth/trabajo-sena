@@ -32,7 +32,7 @@ Antes de ejecutar el proyecto, necesitas tener instalado lo siguiente en tu sist
 
 3. Ejecuta el script de compilación:
    ```
-   .\build_simple.bat
+   .\make
    ```
 
 El script de compilación hará lo siguiente:
@@ -52,7 +52,7 @@ Después de compilar, puedes ejecutar la aplicación directamente:
 O simplemente ejecutar el script de compilación de nuevo:
 
 ```
-.\build_simple.bat
+.\make run
 ```
 
 ## Características
