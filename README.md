@@ -106,7 +106,7 @@ Todos los datos del presupuesto se almacenan en el archivo budget_data.csv en el
 ## Requisitos del Sistema
 
 - Windows 7 o posterior
-- Mínimo 4GB de RAM
+- Mínimo 500 MB de RAM
 - 50MB de espacio libre en disco
 - Resolución de pantalla: 1280x720 o superior
 
