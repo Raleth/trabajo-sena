@@ -1,6 +1,6 @@
 # Configuración del compilador y flags
 CC = gcc
-CFLAGS = -Iinclude -Wall -Wextra -O0
+CFLAGS = -Iinclude -Wall -Wextra -O2
 LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm -lshell32 -lcomdlg32 -luser32
 
 # Directorios
