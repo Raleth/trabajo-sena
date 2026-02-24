@@ -225,7 +225,7 @@ void LoadBudgetFromCSV() {
         Transaction* t = &budget.transactions[budget.count];
         char typeStr[32];
         char amountStr[64];
-        char description[256];
+        char description[128];
         char date[32];
         
         // Limpiar buffers
@@ -235,8 +235,8 @@ void LoadBudgetFromCSV() {
         memset(date, 0, sizeof(date));
         
         // Parsear con mejor manejo de errores
-        int parsed = sscanf(line, "%31[^,],%63[^,],%255[^,],%31[^\n\r]", 
-                           typeStr, amountStr, description, date);
+        int parsed = sscanf(line, "%31[^,],%63[^,],%127[^,],%31[^\n\r]", 
+                   typeStr, amountStr, description, date);
         
         if (parsed == 4) {
             // Convertir monto de string a float con validación
@@ -272,11 +272,9 @@ void LoadBudgetFromCSV() {
             }
             
             // Copiar datos validados
-            strncpy(t->description, description, sizeof(t->description)-1);
-            t->description[sizeof(t->description)-1] = '\0';
+            snprintf(t->description, sizeof(t->description), "%s", description);
             
-            strncpy(t->date, date, sizeof(t->date)-1);
-            t->date[sizeof(t->date)-1] = '\0';
+            snprintf(t->date, sizeof(t->date), "%s", date);
             
             budget.count++;
             loadedCount++;
