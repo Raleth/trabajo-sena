@@ -8,7 +8,7 @@ Antes de ejecutar el proyecto, necesitas tener instalado lo siguiente en tu sist
 
 1. Compilador MinGW-w64 GCC
    - Debe estar instalado en: C:\mingw64\
-   - Descargar desde: https://www.mingw-w64.org/
+   - Descargar desde: https://www.msys2.org/
 
 2. Git para Windows (opcional, solo si vas a clonar desde un repositorio)
 
@@ -29,8 +29,16 @@ Antes de ejecutar el proyecto, necesitas tener instalado lo siguiente en tu sist
    ```
    cd ruta\a\Ana_Transcriptor
    ```
+3. Ejecuta las instalaciones de las herramientas/librerias|
+   ```
+   pacman -S --needed mingw-w64-ucrt-x86_64-toolchain
+   pacman -S --needed make cmake ninja
+   pacman -S mingw-w64-ucrt-x86_64-raylib
 
-3. Ejecuta el script de compilación:
+   ```
+
+
+4. Ejecuta el script de compilación:
    ```
    .\make
    ```
