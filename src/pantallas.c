@@ -251,7 +251,7 @@ static void RenderTransactions(int fontId, const UITheme *t, const UIIds *ids)
                                                     .layoutDirection = CLAY_LEFT_TO_RIGHT,
                                                     .childAlignment = {.x = CLAY_ALIGN_X_RIGHT, .y = CLAY_ALIGN_Y_CENTER}}})
     {
-        char titleText[128];
+        static char titleText[128];
         snprintf(titleText, sizeof(titleText), "Transactions (%d)", budget.count);
         CLAY_TEXT(Clay_MakeString(titleText), CLAY_TEXT_CONFIG({.fontId = fontId, .fontSize = 22, .textColor = t->texto}));
     }
