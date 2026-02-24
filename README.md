@@ -45,7 +45,7 @@ Antes de ejecutar el proyecto, necesitas tener instalado lo siguiente en tu sist
 
 5. Ejecuta el script de compilación:
    ```
-   .\make
+   make
    ```
 
 El script de compilación hará lo siguiente:
@@ -65,7 +65,7 @@ Después de compilar, puedes ejecutar la aplicación directamente:
 O simplemente ejecutar el script de compilación de nuevo:
 
 ```
-.\make run
+make run
 ```
 
 ## Características
