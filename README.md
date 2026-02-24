@@ -6,9 +6,10 @@ Una aplicación de escritorio para gestionar el presupuesto personal con seguimi
 
 Antes de ejecutar el proyecto, necesitas tener instalado lo siguiente en tu sistema Windows:
 
-1. Compilador MinGW-w64 GCC
+1. Compilador GCC
    - Debe estar instalado en: C:\mingw64\
    - Descargar desde: https://www.msys2.org/
+   - Debe ser el de arquitectura x86_64
 
 2. Git para Windows (opcional, solo si vas a clonar desde un repositorio)
 
@@ -23,22 +24,26 @@ Antes de ejecutar el proyecto, necesitas tener instalado lo siguiente en tu sist
 
 ## Cómo Compilar
 
-1. Abre PowerShell o Símbolo del Sistema
+1. Abre MSYS2 UCRT64 SHELL(OBLIGATORIO)
 
-2. Navega al directorio del proyecto:
+2. Navega al directorio donde tienes el proyecto:
    ```
-   cd ruta\a\Ana_Transcriptor
+   cd ruta\a\Directorio_donde_tendras_el_proyecto
    ```
+
 3. Ejecuta las instalaciones de las herramientas/librerias|
    ```
    pacman -S --needed mingw-w64-ucrt-x86_64-toolchain
    pacman -S --needed make cmake ninja
    pacman -S mingw-w64-ucrt-x86_64-raylib
-
+   pacman -S git
    ```
+   
+4. Clona el repositorio
+   ```
+   git clone https://github.com/Raleth/trabajo-sena.git
 
-
-4. Ejecuta el script de compilación:
+5. Ejecuta el script de compilación:
    ```
    .\make
    ```
