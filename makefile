@@ -19,9 +19,9 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(filter $(SRC_DIR)/%, 
             $(patsubst $(IDIOMAS_DIR)/%.c, $(BUILD_DIR)/%.o, $(filter $(IDIOMAS_DIR)/%, $(SRC_FILES)))
 
 # DLLs necesarios (ajusta las rutas según tu instalación)
-RAYLIB_DLL = C:/msys64/mingw64/bin/libraylib.dll
-GCC_DLL = C:/msys64/mingw64/bin/libgcc_s_seh-1.dll
-WINPTHREAD_DLL = C:/msys64/mingw64/bin/libwinpthread-1.dll
+RAYLIB_DLL = /ucrt64/bin/libraylib.dll
+GCC_DLL    = /ucrt64/bin/libgcc_s_seh-1.dll
+WINPTHREAD_DLL = /ucrt64/bin/libwinpthread-1.dll
 DLL_FILES = $(RAYLIB_DLL) $(GCC_DLL) $(WINPTHREAD_DLL)
 
 # Meta por defecto (la primera regla es la que se ejecuta por defecto)
