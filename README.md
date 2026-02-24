@@ -42,6 +42,7 @@ Antes de ejecutar el proyecto, necesitas tener instalado lo siguiente en tu sist
 4. Clona el repositorio
    ```
    git clone https://github.com/Raleth/trabajo-sena.git
+   ```
 
 5. Ejecuta el script de compilación:
    ```
