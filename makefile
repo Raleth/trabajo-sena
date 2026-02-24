@@ -22,7 +22,8 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(filter $(SRC_DIR)/%, 
 RAYLIB_DLL = /ucrt64/bin/libraylib.dll
 GCC_DLL    = /ucrt64/bin/libgcc_s_seh-1.dll
 WINPTHREAD_DLL = /ucrt64/bin/libwinpthread-1.dll
-DLL_FILES = $(RAYLIB_DLL) $(GCC_DLL) $(WINPTHREAD_DLL)
+GLFW_DLL   = C:/msys64/mingw64/bin/glfw3.dll
+DLL_FILES = $(RAYLIB_DLL) $(GCC_DLL) $(WINPTHREAD_DLL) $(GLFW_DLL)
 
 # Meta por defecto (la primera regla es la que se ejecuta por defecto)
 all: $(EXECUTABLE)
@@ -37,6 +38,8 @@ $(EXECUTABLE): $(OBJ_FILES) | $(BIN_DIR)
 			cp "$$dll" $(BIN_DIR)/ 2>/dev/null; \
 		fi \
 	done
+	@echo Copying assets...
+	@cp -r fuente $(BIN_DIR)/ 2>/dev/null || true
 	@echo Build successful!
 
 # Regla para compilar main.c -> build/main.o
